@@ -1,5 +1,8 @@
 package com.maximbuza.appaston.dto;
 
+import org.springframework.stereotype.Component;
+
+
 public class UserRegistrationRequestDTO {
     private String username;
     private String password;
