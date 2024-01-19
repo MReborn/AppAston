@@ -1,7 +1,7 @@
 package com.maximbuza.appaston.controller;
 
 
-import com.maximbuza.appaston.dto.UserRegistrationRequestDTO;
+import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
 import com.maximbuza.appaston.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +22,13 @@ public class MyController {
     }
 
     @PostMapping("/signUpUser")
-    public String signUpUser(@RequestBody UserRegistrationRequestDTO userRegistrationRequestDTO) {
-        return userService.singUpUser(userRegistrationRequestDTO);
+    public String signUpUser(@RequestBody LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) {
+        return userService.singUpUser(loginAndRegistrationUserRequestDTO);
+    }
+
+    @PostMapping("/signInUser")
+    public String signInUser(@RequestBody LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) {
+        return userService.singInUser(loginAndRegistrationUserRequestDTO);
     }
 
 
