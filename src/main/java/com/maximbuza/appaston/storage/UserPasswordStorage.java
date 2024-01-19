@@ -36,6 +36,7 @@ public class UserPasswordStorage {
         String passwordPossible = userRegistrationRequestDTO.getPassword();
 
         if (!this.isUserExist(userPossible)) {
+            if(passwordPossible.equals("")){return "Password is incorrect :(";}
             userAccounts.put(userPossible, passwordPossible);
             return "User has been added:\n login: "+userPossible+"\npassword: "+passwordPossible;
         } else {
