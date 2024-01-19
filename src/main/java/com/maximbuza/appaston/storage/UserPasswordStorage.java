@@ -34,7 +34,7 @@ public class UserPasswordStorage {
     public String signUpUser(UserRegistrationRequestDTO userRegistrationRequestDTO) {
         String userPossible = userRegistrationRequestDTO.getUsername();
         String passwordPossible = userRegistrationRequestDTO.getPassword();
-
+        if(userPossible.equals("")){return "Login is incorrect";}
         if (!this.isUserExist(userPossible)) {
             if(passwordPossible.equals("")){return "Password is incorrect :(";}
             userAccounts.put(userPossible, passwordPossible);
