@@ -8,18 +8,14 @@ import org.junit.Test;
 
 
 public class UserPasswordStorageTest extends UserPasswordStorage {
-    public static UserPasswordStorage userPasswordStorage;
-    @BeforeClass
-    public static void init(){userPasswordStorage = new UserPasswordStorage();}
-
     @Test
     public void existUser() {
-        assertTrue(userPasswordStorage.isUserExist("Max"));
+        assertTrue(isUserExist("Max"));
     }
 
     @Test
     public void correctPassword() {
-        assertTrue(userPasswordStorage.isPasswordCorrect("Boot","11111"));
+        assertTrue(isPasswordMatch("Boot","11111"));
     }
 
 }
