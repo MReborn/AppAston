@@ -3,6 +3,7 @@ package com.maximbuza.appaston.storage;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 @Component
@@ -17,7 +18,7 @@ public class UserPasswordStorage {
         return userAccount.get(username).equals(password);
     }
 
-    public Set<Map.Entry<String, String>> giveAllUserAccounts(){
+    public Set<Map.Entry<String,String>> giveAllUser(){
         return userAccount.entrySet();
     }
 }
