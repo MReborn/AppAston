@@ -6,17 +6,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
+
 @Service
 public class UserServiceImpl implements UserService {
     public UserServiceImpl(@Autowired UserPasswordStorage userPasswordStorage) {
         this.userPasswordStorage = userPasswordStorage;
     }
+    private UserPasswordStorage userPasswordStorage;
 
-    UserPasswordStorage userPasswordStorage;
 
     @Override
-    public Set<Map.Entry<String, String>> getAllUsers() {
-        return userPasswordStorage.giveAllUserAccounts();
+    public Set<Map.Entry<String,String>> getAllUsers() {
+        return userPasswordStorage.giveAllUser();
     }
 
     @Override
