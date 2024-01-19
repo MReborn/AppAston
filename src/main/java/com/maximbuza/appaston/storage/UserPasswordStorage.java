@@ -1,7 +1,6 @@
 package com.maximbuza.appaston.storage;
 
-import com.maximbuza.appaston.dto.UserRegistrationRequestDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -10,19 +9,56 @@ import java.util.Set;
 
 @Component
 public class UserPasswordStorage {
+    public String signUpUser(LoginAndRegistrationUserRequestDTO user) {
+        String loginPossible = user.getUsername();
+        String passwordPossible = user.getPassword();
+        if (isLoginCorrect(loginPossible)) {
+            return "Login is incorrect format";
+        }
+        if (!isUserExist(loginPossible)) {
+            if (isPasswordCorrect(passwordPossible)) {
+                return "Password is incorrect format :(";
+            }
+            userAccounts.put(loginPossible, passwordPossible);
+            return "User has been added:\n login: " + loginPossible + "\npassword: " + passwordPossible;
+        } else {
+            return "Oh no! The user has already been added once";
+        }
 
-    HashMap<String, String> userAccounts = new HashMap<>() {{
-        put("Max", "12345");
-        put("Boot", "11111");
-        put("Var", "54321");
-    }};
+    }
+
+    public String signInUser(LoginAndRegistrationUserRequestDTO user) {
+        String login = user.getUsername();
+        String password = user.getPassword();
+
+        if (isLoginCorrect(login)) {
+            return "Login is incorrect";
+        }
+
+        if (isUserExist(login)) {
+            if (isPasswordCorrect(password)) {
+                return "Password is incorrect format:(";
+            } else if (isPasswordMatch(login, password)) {
+                return "Successful login. Congratulations";
+            } else return "Wrong password";
+
+        } else return "The user was not found";
+    }
 
 
-    public boolean isUserExist(String username) {
+    public static boolean isLoginCorrect(String login) {
+        return login.equals("");
+    }
+
+    public static boolean isPasswordCorrect(String password) {
+        return password.equals("");
+    }
+
+    public static boolean isUserExist(String username) {
         return userAccounts.containsKey(username);
     }
 
-    public boolean isPasswordCorrect(String username, String password) {
+    public static boolean isPasswordMatch(String username, String password) {
         return userAccounts.get(username).equals(password);
     }
 
@@ -30,18 +66,10 @@ public class UserPasswordStorage {
         return userAccounts.entrySet();
     }
 
+    static HashMap<String, String> userAccounts = new HashMap<>() {{
+        put("Max", "12345");
+        put("Boot", "11111");
+        put("Var", "54321");
+    }};
 
-    public String signUpUser(UserRegistrationRequestDTO userRegistrationRequestDTO) {
-        String userPossible = userRegistrationRequestDTO.getUsername();
-        String passwordPossible = userRegistrationRequestDTO.getPassword();
-        if(userPossible.equals("")){return "Login is incorrect";}
-        if (!this.isUserExist(userPossible)) {
-            if(passwordPossible.equals("")){return "Password is incorrect :(";}
-            userAccounts.put(userPossible, passwordPossible);
-            return "User has been added:\n login: "+userPossible+"\npassword: "+passwordPossible;
-        } else {
-            return "Oh no! The user has already been added once";
-        }
-
-    }
 }
