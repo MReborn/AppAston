@@ -1,5 +1,6 @@
 package com.maximbuza.appaston.service;
 
+import com.maximbuza.appaston.dto.UserRegistrationRequestDTO;
 import com.maximbuza.appaston.storage.UserPasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void singUpUser() {
+    public String singUpUser(UserRegistrationRequestDTO userRegistrationRequestDTO) {
+        return userPasswordStorage.signUpUser(userRegistrationRequestDTO);
 
     }
 
