@@ -1,29 +1,42 @@
 package com.maximbuza.appaston.storage;
 
+import static com.maximbuza.appaston.storage.CheckerUsernamePasswordForStorage.*;
+
 import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
 import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
 import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
+
 
 @Component
 public class UsernamePasswordStorage {
+    static HashMap<String, String> userAccounts = new HashMap<>() {{
+        put("Max", "12345");
+        put("Boot", "11111");
+        put("Var", "54321");
+    }};
+
+    public String giveAllUser() {
+        return "List of user usernames and passwords:\n" + userAccounts.entrySet();
+    }
+
     public String signUpUser(LoginAndRegistrationUserRequestDTO user) {
         String loginPossible = user.getUsername();
         String passwordPossible = user.getPassword();
         if (isLoginIncorrect(loginPossible)) {
             return "Login is incorrect format";
         }
-        if (!isUserExist(loginPossible)) {
-            if (isPasswordIncorrectFormat(passwordPossible)) {
-                return "Password is incorrect format :(";
-            }
-            userAccounts.put(loginPossible, passwordPossible);
-            return "User has been added:\n login: " + loginPossible + "\npassword: " + passwordPossible;
-        } else {
+        if (isUserExist(loginPossible)) {
             return "Oh no! The user has already been added once";
         }
-
+        if (isPasswordIncorrectFormat(passwordPossible)) {
+            return "Password is incorrect format :(";
+        }
+        userAccounts.put(loginPossible, passwordPossible);
+        return "User has been added:\nlogin: " + loginPossible + "\npassword: " + passwordPossible;
     }
+
 
     public String signInUser(LoginAndRegistrationUserRequestDTO user) {
         String username = user.getUsername();
@@ -47,6 +60,7 @@ public class UsernamePasswordStorage {
         String username = changerPasswordRequestDTO.getUsername();
         String oldPassword = changerPasswordRequestDTO.getOldPassword();
         String newPassword = changerPasswordRequestDTO.getNewPassword();
+
         if (isLoginIncorrect(username)) {
             return "Login is incorrect";
         }
@@ -57,44 +71,10 @@ public class UsernamePasswordStorage {
             return "Some of the Passwords in the wrong format :(";
         }
         if (isPasswordMatch(username, oldPassword)) {
-            setNewPassword(username,newPassword);
+            setNewPassword(username, newPassword);
             return "Password was changed successfully.";
         } else {
             return "Wrong password";
         }
-
     }
-
-    public static boolean isLoginIncorrect(String login) {
-        return login.equals("");
-    }
-
-    public static boolean isPasswordIncorrectFormat(String password) {
-        return password.equals("");
-    }
-
-    public static boolean isUserExist(String username) {
-        return userAccounts.containsKey(username);
-    }
-
-    public static boolean isPasswordMatch(String username, String password) {
-
-        return userAccounts.get(username).equals(password);
-    }
-
-    public static void setNewPassword(String username, String newPassword) {
-        userAccounts.put(username,newPassword);
-    }
-
-    public String giveAllUser() {
-        return "List of user usernames and passwords:\n"+userAccounts.entrySet().toString();
-    }
-
-    static HashMap<String, String> userAccounts = new HashMap<>() {{
-        put("Max", "12345");
-        put("Boot", "11111");
-        put("Var", "54321");
-    }};
-
-
 }
