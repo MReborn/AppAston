@@ -1,7 +1,8 @@
 package com.maximbuza.appaston.service;
 
 import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
-import com.maximbuza.appaston.storage.UserPasswordStorage;
+import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
+import com.maximbuza.appaston.storage.UsernamePasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,26 +11,31 @@ import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
-    public UserServiceImpl(@Autowired UserPasswordStorage userPasswordStorage) {
-        this.userPasswordStorage = userPasswordStorage;
+    public UserServiceImpl(@Autowired UsernamePasswordStorage usernamePasswordStorage) {
+        this.usernamePasswordStorage = usernamePasswordStorage;
     }
-    private UserPasswordStorage userPasswordStorage;
+    private UsernamePasswordStorage usernamePasswordStorage;
 
 
     @Override
-    public Set<Map.Entry<String,String>> getAllUsers() {
-        return userPasswordStorage.giveAllUser();
+    public String getAllUsers() {
+        return usernamePasswordStorage.giveAllUser();
     }
 
     @Override
     public String singUpUser(LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) {
-        return userPasswordStorage.signUpUser(loginAndRegistrationUserRequestDTO);
+        return usernamePasswordStorage.signUpUser(loginAndRegistrationUserRequestDTO);
 
     }
 
     @Override
     public String singInUser(LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) {
-        return userPasswordStorage.signInUser(loginAndRegistrationUserRequestDTO);
+        return usernamePasswordStorage.signInUser(loginAndRegistrationUserRequestDTO);
+    }
+
+    @Override
+    public String changePassword(ChangerPasswordRequestDTO changerPasswordRequestDTO) {
+        return usernamePasswordStorage.changePassword(changerPasswordRequestDTO);
     }
 
 //    @Override
