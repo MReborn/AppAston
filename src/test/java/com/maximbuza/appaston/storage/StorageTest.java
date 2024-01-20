@@ -27,22 +27,29 @@ public class StorageTest extends Storage {
     }
 
     @Test
-    public void isExistUser_Test() {
+    public void isExistUser_ShouldTrue_WhenUserExist() {
         assertTrue(isUserExist("Max"));
+    }
+
+    @Test
+    public void isExistUser_ShouldFalse_WhenUserNotExist() {
         assertFalse(isUserExist("Gena"));
     }
 
     @Test
-    public void isPasswordMatch_Test() {
+    public void isPasswordMatch_ShouldFalse_WhenPasswordNotMatch() {
         assertFalse(isPasswordMatch("Max", "00000"));
+    }
+
+    @Test
+    public void isPasswordMatch_ShouldTrue_WhenPasswordMatch() {
         assertTrue(isPasswordMatch("Boot", "111112"));
     }
 
     @Test
-    public void setNewPassword() {
-        setNewPassword("Var","555");
-        assertEquals("555",userAccounts.get("Var"));
-
+    public void setNewPassword_WhenPasswordSetInStorage() {
+        setNewPassword("Var", "555");
+        assertEquals("555", userAccounts.get("Var"));
     }
 
 }
