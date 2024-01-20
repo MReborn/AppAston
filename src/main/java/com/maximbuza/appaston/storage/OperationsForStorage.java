@@ -66,7 +66,7 @@ public class OperationsForStorage {
         }
         if (isPasswordMatch(username, oldPassword)) { // если все условия выполнены то пароль сменится
             setPassword(username, newPassword);
-            return "Password was changed successfully.";
+            return "Password was changed successfully. Your new login details:\nusername: "+username+"\npassword: "+newPassword;
         } else {
             return "Wrong password";
         }

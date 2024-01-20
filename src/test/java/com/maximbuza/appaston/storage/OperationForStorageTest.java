@@ -72,7 +72,9 @@ public class OperationForStorageTest extends OperationsForStorage {
         changerPasswordRequestDTO.setUsername("Lil");
         changerPasswordRequestDTO.setOldPassword("999");
         changerPasswordRequestDTO.setNewPassword("2222");
-        assertEquals(changePassword(changerPasswordRequestDTO), "Password was changed successfully.");
+        assertEquals(changePassword(changerPasswordRequestDTO), "Password was changed successfully. Your new login details:\nusername: " +
+                changerPasswordRequestDTO.getUsername() + "\npassword: " + changerPasswordRequestDTO.getNewPassword())
+        ;
     }
 
 
@@ -110,7 +112,6 @@ public class OperationForStorageTest extends OperationsForStorage {
         userRequestDTO.setPassword("999");
         assertEquals(signInUser(userRequestDTO), "Successful login. Congratulations");
     }
-
 
 
     @Test
