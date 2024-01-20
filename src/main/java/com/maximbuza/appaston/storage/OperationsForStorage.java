@@ -18,7 +18,7 @@ public class OperationsForStorage {
         String loginPossible = user.getUsername();
         String passwordPossible = user.getPassword();
         if (isLoginIncorrect(loginPossible)) {
-            return "Login is incorrect format";
+            return "Username is incorrect format";
         }
         if (isUserExist(loginPossible)) {
             return "Oh no! The user has already been added once";
@@ -36,7 +36,7 @@ public class OperationsForStorage {
         String password = user.getPassword();
 
         if (isLoginIncorrect(username)) {
-            return "Login is incorrect";
+            return "Username is incorrect";
         }
         if (!isUserExist(username)) {
             return "The user was not found";
@@ -56,7 +56,7 @@ public class OperationsForStorage {
         String newPassword = changerPasswordRequestDTO.getNewPassword();
 
         if (isLoginIncorrect(username)) {
-            return "Login is incorrect";
+            return "Username is incorrect";
         }
         if (!isUserExist(username)) {
             return "The user was not found";
