@@ -1,5 +1,6 @@
 package storageTest;
 
+import static com.maximbuza.appaston.storage.CheckerUsernamePasswordForStorage.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -8,7 +9,7 @@ import com.maximbuza.appaston.storage.UsernamePasswordStorage;
 import org.junit.Test;
 
 
-public class UsernamePasswordStorageTest extends UsernamePasswordStorage {
+public class CheckerUsernamePasswordForStorageTest extends UsernamePasswordStorage {
     public static ChangerPasswordRequestDTO changerPasswordRequestDTO;
 
     @Test
