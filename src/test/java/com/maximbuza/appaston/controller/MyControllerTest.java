@@ -4,9 +4,7 @@ import com.maximbuza.appaston.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,11 +23,12 @@ public class MyControllerTest {
     @InjectMocks
     private MyController myController;
 
+
     private MockMvc mockMvc;
 
 
     @Before
-    public void setup() {
+    public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(myController).build();
     }
 
@@ -39,4 +38,5 @@ public class MyControllerTest {
         mockMvc.perform(get("/api/getAllUsers")).andExpect(status().isOk());
         Mockito.verify(userService, times(1)).getAllUsers();
     }
+
 }
