@@ -9,32 +9,32 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api") // к этому контроллеру обращаться через /api
 public class MyController {
     public MyController(@Autowired UserService userService) {
         this.userService = userService;
-    }
+    } // прикрепили сервис к контроллеру
 
     private final UserService userService;
 
 
-    @GetMapping("/getAllUsers")
+    @GetMapping("/getAllUsers") // по этому адресу можно вызвать get запрос и получить список юзеров
     public String getAllUsers() {
         return userService.getAllUsers();
-    }
+    } // делегирует запрос сервису
 
-    @PostMapping("/signUpUser")
-    public String signUpUser(@RequestBody LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) {
+    @PostMapping("/signUpUser") //регистрация юзера
+    public String signUpUser(@RequestBody LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) { // образует контейнер данных пользователя и передает сервису
         return userService.singUpUser(loginAndRegistrationUserRequestDTO);
     }
 
-    @PostMapping("/signInUser")
-    public String signInUser(@RequestBody LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) {
+    @PostMapping("/signInUser") //вход юзера
+    public String signInUser(@RequestBody LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) { // образует контейнер данных пользователя и передает сервису
         return userService.singInUser(loginAndRegistrationUserRequestDTO);
     }
 
-    @PostMapping("/changePassword")
-    public String changePassword(@RequestBody ChangerPasswordRequestDTO changerPasswordRequestDTO) {
+    @PostMapping("/changePassword") //смена пароля
+    public String changePassword(@RequestBody ChangerPasswordRequestDTO changerPasswordRequestDTO) { // образует контейнер данных пользователя и передает сервису
         return userService.changePassword(changerPasswordRequestDTO);
     }
 }

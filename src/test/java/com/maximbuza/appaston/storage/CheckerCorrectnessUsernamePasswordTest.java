@@ -7,11 +7,11 @@ import org.junit.Test;
 public class CheckerCorrectnessUsernamePasswordTest extends CheckerCorrectnessUsernamePassword {
     @Test
     public void isLoginIncorrect_ShouldBeTrue_WhenUserEmpty() {
-        assertTrue(isLoginIncorrect(""));
+        assertTrue(isUserIncorrect(""));
     }
     @Test
     public void isLoginIncorrect_ShouldBeFalse_WhenUserNotEmpty() {
-        assertFalse(isLoginIncorrect("Mks"));
+        assertFalse(isUserIncorrect("Mks"));
     }
 
     @Test

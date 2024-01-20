@@ -12,7 +12,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[]{Configuration.class};
-    }
+    } // ссылаемся на конфигурационный класс
 
     @Override
     protected String[] getServletMappings() {

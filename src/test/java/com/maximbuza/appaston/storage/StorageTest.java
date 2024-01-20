@@ -48,7 +48,7 @@ public class StorageTest extends Storage {
 
     @Test
     public void setNewPassword_WhenPasswordSetInStorage() {
-        setNewPassword("Var", "555");
+        setPassword("Var", "555");
         assertEquals("555", userAccounts.get("Var"));
     }
 
