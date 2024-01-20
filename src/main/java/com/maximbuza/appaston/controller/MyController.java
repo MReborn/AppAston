@@ -18,8 +18,8 @@ public class MyController {
     private final UserService userService;
 
 
-    @GetMapping("/showAllUsers")
-    public String showAllUsers() {
+    @GetMapping("/getAllUsers")
+    public String getAllUsers() {
         return userService.getAllUsers();
     }
 
