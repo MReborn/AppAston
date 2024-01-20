@@ -1,6 +1,5 @@
 package com.maximbuza.appaston.dto;
 
-
 public class LoginAndRegistrationUserRequestDTO {
     private String username;
     private String password;
@@ -12,5 +11,11 @@ public class LoginAndRegistrationUserRequestDTO {
         return password;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -6,15 +6,14 @@ import com.maximbuza.appaston.storage.UsernamePasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
     public UserServiceImpl(@Autowired UsernamePasswordStorage usernamePasswordStorage) {
         this.usernamePasswordStorage = usernamePasswordStorage;
     }
-    private UsernamePasswordStorage usernamePasswordStorage;
+
+    private final UsernamePasswordStorage usernamePasswordStorage;
 
 
     @Override
@@ -37,9 +36,4 @@ public class UserServiceImpl implements UserService {
     public String changePassword(ChangerPasswordRequestDTO changerPasswordRequestDTO) {
         return usernamePasswordStorage.changePassword(changerPasswordRequestDTO);
     }
-
-//    @Override
-//    public User changePassword() {
-//        return null;
-//    }
 }

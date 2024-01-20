@@ -3,10 +3,7 @@ package com.maximbuza.appaston.storage;
 import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
 import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
 import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 @Component
 public class UsernamePasswordStorage {
