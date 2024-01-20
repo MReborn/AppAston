@@ -2,6 +2,7 @@ package com.maximbuza.appaston.controller;
 
 
 import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
+import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
 import com.maximbuza.appaston.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class MyController {
 
 
     @GetMapping("/showAllUsers")
-    public Set<Map.Entry<String, String>> showAllUsers() {
+    public String showAllUsers() {
         return userService.getAllUsers();
     }
 
@@ -31,7 +32,10 @@ public class MyController {
         return userService.singInUser(loginAndRegistrationUserRequestDTO);
     }
 
-
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestBody ChangerPasswordRequestDTO changerPasswordRequestDTO) {
+        return userService.changePassword(changerPasswordRequestDTO);
+    }
 }
 
 
