@@ -1,6 +1,8 @@
 package com.maximbuza.appaston.storage;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 
 public class Storage {
@@ -21,4 +23,16 @@ public class Storage {
     public static boolean isUserExist(String username) {
         return userAccounts.containsKey(username);
     } // существует ли пользователь в хранилище. Сверяет с ключами
+
+    public static Set<Map.Entry<String, String>> giveAllUsersFromStorage() {
+        return userAccounts.entrySet();
+    } // достает из хранилища все юзернеймы и пароли и возвращает
+
+    public static boolean isUserIncorrect(String username) {
+        return username.equals("");
+    } // проверка пустая ли строка
+
+    public static boolean isPasswordIncorrectFormat(String password) {
+        return password.equals("");
+    } // проверяет пустой ли пароль и возвращает правду если пустой
 }
