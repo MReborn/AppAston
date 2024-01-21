@@ -2,38 +2,38 @@ package com.maximbuza.appaston.service;
 
 import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
 import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
-import com.maximbuza.appaston.storage.OperationsForStorage;
+import com.maximbuza.appaston.operations.StorageOperationsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class UserServiceImpl implements UserService {
-    public UserServiceImpl(@Autowired OperationsForStorage operationsForStorage) { // внедрется зависимость от класса работающего с хранилищем
-        this.operationsForStorage = operationsForStorage;
+    public UserServiceImpl(@Autowired StorageOperationsImpl storageOperations) { // внедрется зависимость от класса работающего с хранилищем
+        this.storageOperations = storageOperations;
     }
 
-    private final OperationsForStorage operationsForStorage;
+    private final StorageOperationsImpl storageOperations;
 
 
     @Override
     public String getAllUsers() {
-        return operationsForStorage.giveAllUser();
+        return storageOperations.giveAllUser();
     } // просит вернуть всех юзеров класс, работающий с хранилищем
 
     @Override
     public String singUpUser(LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) { //регистрация нового пользователя
-        return operationsForStorage.signUpUser(loginAndRegistrationUserRequestDTO);// от контейнера перекидывает данные о пользователе классу, работающему с хранилищем
+        return storageOperations.signUpUser(loginAndRegistrationUserRequestDTO);// от контейнера перекидывает данные о пользователе классу, работающему с хранилищем
 
     }
 
     @Override
     public String singInUser(LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) { //вход юзера
-        return operationsForStorage.signInUser(loginAndRegistrationUserRequestDTO);// от контейнера перекидывает данные о пользователе классу, работающему с хранилищем
+        return storageOperations.signInUser(loginAndRegistrationUserRequestDTO);// от контейнера перекидывает данные о пользователе классу, работающему с хранилищем
     }
 
     @Override
     public String changePassword(ChangerPasswordRequestDTO changerPasswordRequestDTO) { //смена пароля
-        return operationsForStorage.changePassword(changerPasswordRequestDTO);// от контейнера перекидывает данные о пользователе классу, работающему с хранилищем
+        return storageOperations.changePassword(changerPasswordRequestDTO);// от контейнера перекидывает данные о пользователе классу, работающему с хранилищем
     }
 }
