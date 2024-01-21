@@ -52,4 +52,24 @@ public class StorageTest extends Storage {
         assertEquals("555", userAccounts.get("Var"));
     }
 
+    @Test
+    public void isLoginIncorrect_ShouldBeTrue_WhenUserEmpty() {
+        assertTrue(isUserIncorrect(""));
+    }
+
+    @Test
+    public void isLoginIncorrect_ShouldBeFalse_WhenUserNotEmpty() {
+        assertFalse(isUserIncorrect("Mks"));
+    }
+
+    @Test
+    public void isPasswordIncorrectFormat_ShouldBeTrue_WhenPasswordEmpty() {
+        assertTrue(isPasswordIncorrectFormat(""));
+    }
+
+    @Test
+    public void isPasswordIncorrectFormat_ShouldBeFalse_WhenPasswordNotEmpty() {
+        assertFalse(isPasswordIncorrectFormat("12345"));
+    }
+
 }
