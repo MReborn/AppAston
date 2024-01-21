@@ -1,7 +1,8 @@
-package com.maximbuza.appaston.storage;
+package com.maximbuza.appaston.operations;
 
 import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
 import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
+import com.maximbuza.appaston.storage.Storage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,13 +11,13 @@ import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
-public class OperationForStorageTest extends OperationsForStorage {
+public class StorageOperationsImplTest extends StorageOperationsImpl {
     public static ChangerPasswordRequestDTO changerPasswordRequestDTO;
     public LoginAndRegistrationUserRequestDTO userRequestDTO;
 
     @Before
-    public void init() {
-        userRequestDTO = new LoginAndRegistrationUserRequestDTO();
+    public void init() {                                                // в этом блоке меняем hashmap на кастомный с данными, используя рефлексию.
+        userRequestDTO = new LoginAndRegistrationUserRequestDTO();      // Также создаем контейнеры для данных пользователя чтоб тесты были короче
         changerPasswordRequestDTO = new ChangerPasswordRequestDTO();
         HashMap<String, String> userAccounts = new HashMap<>() {{
             put("Lil", "999");
