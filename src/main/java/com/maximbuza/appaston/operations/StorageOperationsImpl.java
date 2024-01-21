@@ -1,6 +1,5 @@
-package com.maximbuza.appaston.storage;
+package com.maximbuza.appaston.operations;
 
-import static com.maximbuza.appaston.storage.CheckerCorrectnessUsernamePassword.*;
 import static com.maximbuza.appaston.storage.Storage.*;
 
 import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
@@ -8,13 +7,14 @@ import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OperationsForStorage {
-
+public class StorageOperationsImpl implements StorageOperation { // здесь логика 4 основных операций над хранилищем, которые может потребовать сервис
+    // само хранение данных и операции над данными вынесены в отдельный класс
+    @Override
     public String giveAllUser() { // метод возвращает список всех аккаунтов через строку
-        return "List of user usernames and passwords:\n" + userAccounts.entrySet();
+        return "List of user usernames and passwords:\n" + giveAllUsersFromStorage();
     }
-
-    public String signUpUser(LoginAndRegistrationUserRequestDTO user) { //регистрация пользователя, тащит из сервиса requestbody с данными о пользователя
+    @Override
+    public String signUpUser(LoginAndRegistrationUserRequestDTO user) { //регистрация пользователя, тащит из сервиса requestBody с данными о пользователя
         String usernamePossible = user.getUsername(); //получает из контейнера данные
         String passwordPossible = user.getPassword();
         if (isUserIncorrect(usernamePossible)) { // проверка на корректность username, если не прошел проверку то соответственный мессаж
@@ -26,11 +26,11 @@ public class OperationsForStorage {
         if (isPasswordIncorrectFormat(passwordPossible)) { // проверка на некорректный пароль
             return "Password is incorrect format :(";
         }
-        setPassword(usernamePossible,passwordPossible); // если все проверки пройдены то помещает данные в контейнер
+        setPassword(usernamePossible, passwordPossible); // если все проверки пройдены то помещает данные в контейнер
         return "User has been added:\nlogin: " + usernamePossible + "\npassword: " + passwordPossible;
     }
 
-
+    @Override
     public String signInUser(LoginAndRegistrationUserRequestDTO user) { // метод для входа пользователя, также тянет данные пользователя
         String username = user.getUsername();
         String password = user.getPassword();
@@ -49,7 +49,7 @@ public class OperationsForStorage {
         } else return "Wrong password";
 
     }
-
+    @Override
     public String changePassword(ChangerPasswordRequestDTO changerPasswordRequestDTO) { // метод по смене пароля тянет с сервиса данные о имени старом и новом пароле
         String username = changerPasswordRequestDTO.getUsername();
         String oldPassword = changerPasswordRequestDTO.getOldPassword();
@@ -66,7 +66,7 @@ public class OperationsForStorage {
         }
         if (isPasswordMatch(username, oldPassword)) { // если все условия выполнены то пароль сменится
             setPassword(username, newPassword);
-            return "Password was changed successfully. Your new login details:\nusername: "+username+"\npassword: "+newPassword;
+            return "Password was changed successfully. Your new login details:\nusername: " + username + "\npassword: " + newPassword;
         } else {
             return "Wrong password";
         }
