@@ -23,9 +23,7 @@ public class MyControllerTest {
     @InjectMocks
     private MyController myController;
 
-
     private MockMvc mockMvc;
-
 
     @Before
     public void setUp() {
