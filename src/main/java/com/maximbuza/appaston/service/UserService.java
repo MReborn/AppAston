@@ -4,11 +4,11 @@ import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
 import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
 
 public interface UserService {
-    public String getAllUsers();
+    String getAllUsers();
 
-    public String singUpUser(LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO);
+    String singUpUser(LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO);
 
-    public String singInUser(LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO);
+    String singInUser(LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO);
 
-    public String changePassword(ChangerPasswordRequestDTO changerPasswordRequestDTO);
+    String changePassword(ChangerPasswordRequestDTO changerPasswordRequestDTO);
 }
