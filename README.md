@@ -42,7 +42,7 @@ Ex:
 
 {
     "username": "Mks",
-    "oldPassword": "1",
+    "password": "1",
     "newPassword": "12"
 }
 
