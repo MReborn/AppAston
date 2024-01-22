@@ -41,113 +41,113 @@ public class UserServiceImplTest extends UserServiceImpl {
 
     @Test // 6 тестов сервиса смены пароля
     public void changePassword_WhenUsernameIncorrect() {
-        changerPasswordRequestDTO.setUsernameChangerDTO("");
+        changerPasswordRequestDTO.setUsername("");
         assertEquals(changePassword(changerPasswordRequestDTO), "Username is incorrect");
     }
 
     @Test
     public void changePassword_WhenUsernameNotFound() {
-        changerPasswordRequestDTO.setUsernameChangerDTO("Kira");
+        changerPasswordRequestDTO.setUsername("Kira");
         assertEquals(changePassword(changerPasswordRequestDTO), "The user was not found");
     }
 
     @Test
     public void changePassword_WhenOldPasswordIncorrect() {
-        changerPasswordRequestDTO.setUsernameChangerDTO("Lil");
-        changerPasswordRequestDTO.setOldPasswordChangerDTO("");
-        changerPasswordRequestDTO.setNewPasswordChangerDTO("2222");
+        changerPasswordRequestDTO.setUsername("Lil");
+        changerPasswordRequestDTO.setOldPassword("");
+        changerPasswordRequestDTO.setNewPassword("2222");
         assertEquals(changePassword(changerPasswordRequestDTO), "Some of the Passwords in the wrong format :(");
     }
 
     @Test
     public void changePassword_WhenNewPasswordIncorrect() {
-        changerPasswordRequestDTO.setUsernameChangerDTO("Lil");
-        changerPasswordRequestDTO.setOldPasswordChangerDTO("3333");
-        changerPasswordRequestDTO.setNewPasswordChangerDTO("");
+        changerPasswordRequestDTO.setUsername("Lil");
+        changerPasswordRequestDTO.setOldPassword("3333");
+        changerPasswordRequestDTO.setNewPassword("");
         assertEquals(changePassword(changerPasswordRequestDTO), "Some of the Passwords in the wrong format :(");
     }
 
     @Test
     public void changePassword_WhenPasswordIsWrong() {
-        changerPasswordRequestDTO.setUsernameChangerDTO("Lil");
-        changerPasswordRequestDTO.setOldPasswordChangerDTO("99");
-        changerPasswordRequestDTO.setNewPasswordChangerDTO("2222");
+        changerPasswordRequestDTO.setUsername("Lil");
+        changerPasswordRequestDTO.setOldPassword("99");
+        changerPasswordRequestDTO.setNewPassword("2222");
         assertEquals(changePassword(changerPasswordRequestDTO), "Wrong password");
     }
 
     @Test
     public void changePassword_WhenPasswordWasChanged() {
-        changerPasswordRequestDTO.setUsernameChangerDTO("Lil");
-        changerPasswordRequestDTO.setOldPasswordChangerDTO("999");
-        changerPasswordRequestDTO.setNewPasswordChangerDTO("2222");
+        changerPasswordRequestDTO.setUsername("Lil");
+        changerPasswordRequestDTO.setOldPassword("999");
+        changerPasswordRequestDTO.setNewPassword("2222");
         assertEquals(changePassword(changerPasswordRequestDTO), "Password was changed successfully. Your new login details:\nusername: " +
-                changerPasswordRequestDTO.getUsernameChangerDTO() + "\npassword: " + changerPasswordRequestDTO.getNewPasswordChangerDTO())
+                changerPasswordRequestDTO.getUsernameChangerDTO() + "\npassword: " + changerPasswordRequestDTO.getNewPassword())
         ;
     }
 
 
     @Test // 5 тестов сервиса по входу юзера
     public void signInUser_WhenUsernameIncorrect() {
-        userRequestDTO.setUsernameSignInAndUpDTO("");
-        userRequestDTO.setPasswordSignInAndUpDTO("4444");
+        userRequestDTO.setUsername("");
+        userRequestDTO.setPassword("4444");
         assertEquals(signInUser(userRequestDTO), "Username is incorrect");
     }
 
     @Test
     public void signInUser_WhenUsernameNotFound() {
-        userRequestDTO.setUsernameSignInAndUpDTO("Kira");
-        userRequestDTO.setPasswordSignInAndUpDTO("4444");
+        userRequestDTO.setUsername("Kira");
+        userRequestDTO.setPassword("4444");
         assertEquals(signInUser(userRequestDTO), "The user was not found");
     }
 
     @Test
     public void signInUser_WhenPasswordIncorrect() {
-        userRequestDTO.setUsernameSignInAndUpDTO("Lil");
-        userRequestDTO.setPasswordSignInAndUpDTO("");
+        userRequestDTO.setUsername("Lil");
+        userRequestDTO.setPassword("");
         assertEquals(signInUser(userRequestDTO), "Password is incorrect format:(");
     }
 
     @Test
     public void signInUser_WhenPasswordIsWrong() {
-        userRequestDTO.setUsernameSignInAndUpDTO("Lil");
-        userRequestDTO.setPasswordSignInAndUpDTO("1999");
+        userRequestDTO.setUsername("Lil");
+        userRequestDTO.setPassword("1999");
         assertEquals(signInUser(userRequestDTO), "Wrong password");
     }
 
     @Test
     public void signInUser_WhenAllCorrect() {
-        userRequestDTO.setUsernameSignInAndUpDTO("Lil");
-        userRequestDTO.setPasswordSignInAndUpDTO("999");
+        userRequestDTO.setUsername("Lil");
+        userRequestDTO.setPassword("999");
         assertEquals(signInUser(userRequestDTO), "Successful login. Congratulations");
     }
 
 
     @Test // 5 тестов сервиса регистрации юзера
     public void signUpUser_WhenUsernameIncorrect() {
-        userRequestDTO.setUsernameSignInAndUpDTO("");
-        userRequestDTO.setPasswordSignInAndUpDTO("123");
+        userRequestDTO.setUsername("");
+        userRequestDTO.setPassword("123");
         assertEquals(signUpUser(userRequestDTO), "Username is incorrect format");
     }
 
     @Test
     public void signUpUser_WhenUserHasAlreadyAdded() {
-        userRequestDTO.setUsernameSignInAndUpDTO("Lil");
-        userRequestDTO.setPasswordSignInAndUpDTO("123");
+        userRequestDTO.setUsername("Lil");
+        userRequestDTO.setPassword("123");
         assertEquals(signUpUser(userRequestDTO), "Oh no! The user has already been added once");
     }
 
     @Test
     public void signUpUser_WhenPasswordIncorrect() {
-        userRequestDTO.setUsernameSignInAndUpDTO("Mks");
-        userRequestDTO.setPasswordSignInAndUpDTO("");
+        userRequestDTO.setUsername("Mks");
+        userRequestDTO.setPassword("");
         assertEquals(signUpUser(userRequestDTO), "Password is incorrect format :(");
     }
 
     @Test
     public void signUpUser_WhenUserHasBeenAdded() {
-        userRequestDTO.setUsernameSignInAndUpDTO("Mks");
-        userRequestDTO.setPasswordSignInAndUpDTO("321");
-        assertEquals(signUpUser(userRequestDTO), "User has been added:\nlogin: " + userRequestDTO.getUsernameSignInAndUpDTO() + "\npassword: " + userRequestDTO.getPasswordSignInAndUpDTO());
+        userRequestDTO.setUsername("Mks");
+        userRequestDTO.setPassword("321");
+        assertEquals(signUpUser(userRequestDTO), "User has been added:\nlogin: " + userRequestDTO.getUsername() + "\npassword: " + userRequestDTO.getPassword());
 
     }
 

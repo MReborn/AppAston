@@ -17,8 +17,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String signUpUser(SignInAndUpRequestDTO signInSignUpRequestDTO) { //регистрация нового пользователя
-        String usernamePossible = signInSignUpRequestDTO.getUsernameSignInAndUpDTO(); //получает из контейнера данные
-        String passwordPossible = signInSignUpRequestDTO.getPasswordSignInAndUpDTO();
+        String usernamePossible = signInSignUpRequestDTO.getUsername(); //получает из контейнера данные
+        String passwordPossible = signInSignUpRequestDTO.getPassword();
         if (isUserIncorrect(usernamePossible)) { // проверка на корректность username, если не прошел проверку то соответственный мессаж
             return "Username is incorrect format";
         }
@@ -42,8 +42,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String signInUser(SignInAndUpRequestDTO signInSignUpRequestDTO) { //вход юзера
-        String username = signInSignUpRequestDTO.getUsernameSignInAndUpDTO();
-        String password = signInSignUpRequestDTO.getPasswordSignInAndUpDTO();
+        String username = signInSignUpRequestDTO.getUsername();
+        String password = signInSignUpRequestDTO.getPassword();
         if (isUserIncorrect(username)) {
             return "Username is incorrect";
         }
@@ -62,8 +62,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public String changePassword(ChangerPasswordRequestDTO changerPasswordRequestDTO) { //смена пароля
         String username = changerPasswordRequestDTO.getUsernameChangerDTO();
-        String oldPassword = changerPasswordRequestDTO.getOldPasswordChangerDTO();
-        String newPassword = changerPasswordRequestDTO.getNewPasswordChangerDTO();
+        String oldPassword = changerPasswordRequestDTO.getOldPassword();
+        String newPassword = changerPasswordRequestDTO.getNewPassword();
 
         if (isUserIncorrect(username)) {
             return "Username is incorrect";

@@ -4,19 +4,19 @@ public class SignInAndUpRequestDTO {
     private String username;
     private String password;
 
-    public String getUsernameSignInAndUpDTO() {
+    public String getUsername() {
         return username;
     }
 
-    public String getPasswordSignInAndUpDTO() {
+    public String getPassword() {
         return password;
     }
 
-    public void setUsernameSignInAndUpDTO(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setPasswordSignInAndUpDTO(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }

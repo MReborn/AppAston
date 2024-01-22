@@ -9,23 +9,23 @@ public class ChangerPasswordRequestDTO {
         return username;
     }
 
-    public String getOldPasswordChangerDTO() {
+    public String getOldPassword() {
         return oldPassword;
     }
 
-    public String getNewPasswordChangerDTO() {
+    public String getNewPassword() {
         return newPassword;
     }
 
-    public void setUsernameChangerDTO(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setOldPasswordChangerDTO(String oldPassword) {
+    public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
     }
 
-    public void setNewPasswordChangerDTO(String newPassword) {
+    public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
 }
