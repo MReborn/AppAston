@@ -1,14 +1,14 @@
 package com.maximbuza.appaston.service;
 
-import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
+import com.maximbuza.appaston.dto.SignInAndUpRequestDTO;
 import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
 
 public interface UserService {
     String getAllUsers();
 
-    String singUpUser(LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO);
+    String signUpUser(SignInAndUpRequestDTO signInSignUpRequestDTO);
 
-    String singInUser(LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO);
+    String signInUser(SignInAndUpRequestDTO signInSignUpRequestDTO);
 
     String changePassword(ChangerPasswordRequestDTO changerPasswordRequestDTO);
 }
