@@ -8,8 +8,10 @@ import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.util.Arrays;
 
 import static org.mockito.Mockito.times;
@@ -31,7 +33,7 @@ public class MyControllerTest {
     }
 
     @Test
-    public void showAllUsersTest() throws Exception {
+    public void showAllUsersTest() throws Exception { // проверяет обращался ли контроллер к сервису и чтобы обращался не более одного раза
         when(userService.getAllUsers()).thenReturn(Arrays.asList("user1", "user2").toString());
         mockMvc.perform(get("/api/getAllUsers")).andExpect(status().isOk());
         Mockito.verify(userService, times(1)).getAllUsers();

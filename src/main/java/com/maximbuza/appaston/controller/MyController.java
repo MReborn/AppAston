@@ -1,7 +1,7 @@
 package com.maximbuza.appaston.controller;
 
 
-import com.maximbuza.appaston.dto.LoginAndRegistrationUserRequestDTO;
+import com.maximbuza.appaston.dto.SignInAndUpRequestDTO;
 import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
 import com.maximbuza.appaston.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ public class MyController {
     public MyController(@Autowired UserService userService) {
         this.userService = userService;
     } // прикрепили сервис к контроллеру
-
     private final UserService userService;
 
 
@@ -24,13 +23,13 @@ public class MyController {
     } // делегирует запрос сервису
 
     @PostMapping("/signUpUser") //регистрация юзера
-    public String signUpUser(@RequestBody LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) { // образует контейнер данных пользователя и передает сервису
-        return userService.singUpUser(loginAndRegistrationUserRequestDTO);
+    public String signUpUser(@RequestBody SignInAndUpRequestDTO signInSignUpRequestDTO) { // образует контейнер данных пользователя и передает сервису
+        return userService.signUpUser(signInSignUpRequestDTO);
     }
 
     @PostMapping("/signInUser") //вход юзера
-    public String signInUser(@RequestBody LoginAndRegistrationUserRequestDTO loginAndRegistrationUserRequestDTO) { // образует контейнер данных пользователя и передает сервису
-        return userService.singInUser(loginAndRegistrationUserRequestDTO);
+    public String signInUser(@RequestBody SignInAndUpRequestDTO signInSignUpRequestDTO) { // образует контейнер данных пользователя и передает сервису
+        return userService.signInUser(signInSignUpRequestDTO);
     }
 
     @PostMapping("/changePassword") //смена пароля
