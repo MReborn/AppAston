@@ -5,7 +5,7 @@ import static com.maximbuza.appaston.storage.Storage.*;
 import java.util.Map;
 import java.util.Set;
 
-public class StorageOperations {
+public class ContainerService {
     public static void setPassword(String username, String newPassword) {
         userAccounts.put(username, newPassword);
     } // метод меняет пароль по юзернейму на новый пароль из параметров
@@ -18,7 +18,7 @@ public class StorageOperations {
         return userAccounts.containsKey(username);
     } // существует ли пользователь в хранилище. Сверяет с ключами
 
-    public static String getPasswordFromStorage(String username){ //получает пароль из хранилища по username
+    public static String getPasswordFromStorage(String username) { //получает пароль из хранилища по username
         return userAccounts.get(username);
     }
 

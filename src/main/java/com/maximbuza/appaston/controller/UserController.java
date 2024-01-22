@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api") // к этому контроллеру обращаться через /api
-public class MyController {
-    public MyController(@Autowired UserService userService) {
+public class UserController {
+    public UserController(@Autowired UserService userService) {
         this.userService = userService;
     } // прикрепили сервис к контроллеру
+
     private final UserService userService;
 
 

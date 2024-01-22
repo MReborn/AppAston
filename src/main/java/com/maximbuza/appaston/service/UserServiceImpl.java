@@ -3,7 +3,7 @@ package com.maximbuza.appaston.service;
 import com.maximbuza.appaston.dto.User;
 import org.springframework.stereotype.Service;
 
-import static com.maximbuza.appaston.domainService.StorageOperations.*;
+import static com.maximbuza.appaston.domainService.ContainerService.*;
 
 @Service
 public class UserServiceImpl implements UserService {

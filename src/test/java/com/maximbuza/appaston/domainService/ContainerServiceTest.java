@@ -13,7 +13,7 @@ import java.util.HashMap;
 import static com.maximbuza.appaston.storage.Storage.*;
 import static org.junit.Assert.*;
 
-public class StorageOperationsTest extends StorageOperations {
+public class ContainerServiceTest extends ContainerService {
     @Mock
     private User user;
 
