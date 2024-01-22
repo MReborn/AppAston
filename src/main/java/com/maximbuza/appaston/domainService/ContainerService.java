@@ -1,9 +1,9 @@
 package com.maximbuza.appaston.domainService;
 
-import static com.maximbuza.appaston.storage.Storage.*;
-
 import java.util.Map;
 import java.util.Set;
+
+import static com.maximbuza.appaston.storage.Storage.userAccounts;
 
 public class ContainerService {
     public static void setPassword(String username, String newPassword) {
