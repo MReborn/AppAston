@@ -1,11 +1,12 @@
 package com.maximbuza.appaston.service;
 
-import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
-import com.maximbuza.appaston.dto.SignInAndUpRequestDTO;
+
+import com.maximbuza.appaston.dto.User;
 import com.maximbuza.appaston.storage.Storage;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -15,13 +16,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class UserServiceImplTest extends UserServiceImpl {
-    public ChangerPasswordRequestDTO changerPasswordRequestDTO;
-    public SignInAndUpRequestDTO userRequestDTO;
+
+    @Mock
+    private User user;
 
     @Before
-    public void init() {                                                // в этом блоке меняем hashmap на кастомный с данными, используя рефлексию.
-        userRequestDTO = new SignInAndUpRequestDTO();      // Также создаем контейнеры для данных пользователя чтоб тесты были короче
-        changerPasswordRequestDTO = new ChangerPasswordRequestDTO();
+    public void init() {    // в этом блоке меняем hashmap на кастомный с данными, используя рефлексию.
+        user = new User();
         HashMap<String, String> userAccounts = new HashMap<>() {{
             put("Lil", "999");
             put("Max", "12345");
@@ -41,113 +42,113 @@ public class UserServiceImplTest extends UserServiceImpl {
 
     @Test // 6 тестов сервиса смены пароля
     public void changePassword_WhenUsernameIncorrect() {
-        changerPasswordRequestDTO.setUsername("");
-        assertEquals(changePassword(changerPasswordRequestDTO), "Username is incorrect");
+        user.setUsername("");
+        assertEquals(changePassword(user), "Username is incorrect");
     }
 
     @Test
     public void changePassword_WhenUsernameNotFound() {
-        changerPasswordRequestDTO.setUsername("Kira");
-        assertEquals(changePassword(changerPasswordRequestDTO), "The user was not found");
+        user.setUsername("Kira");
+        assertEquals(changePassword(user), "The user was not found");
     }
 
     @Test
     public void changePassword_WhenOldPasswordIncorrect() {
-        changerPasswordRequestDTO.setUsername("Lil");
-        changerPasswordRequestDTO.setOldPassword("");
-        changerPasswordRequestDTO.setNewPassword("2222");
-        assertEquals(changePassword(changerPasswordRequestDTO), "Some of the Passwords in the wrong format :(");
+        user.setUsername("Lil");
+        user.setPassword("");
+        user.setNewPassword("2222");
+        assertEquals(changePassword(user), "Some of the Passwords in the wrong format :(");
     }
 
     @Test
     public void changePassword_WhenNewPasswordIncorrect() {
-        changerPasswordRequestDTO.setUsername("Lil");
-        changerPasswordRequestDTO.setOldPassword("3333");
-        changerPasswordRequestDTO.setNewPassword("");
-        assertEquals(changePassword(changerPasswordRequestDTO), "Some of the Passwords in the wrong format :(");
+        user.setUsername("Lil");
+        user.setPassword("3333");
+        user.setNewPassword("");
+        assertEquals(changePassword(user), "Some of the Passwords in the wrong format :(");
     }
 
     @Test
     public void changePassword_WhenPasswordIsWrong() {
-        changerPasswordRequestDTO.setUsername("Lil");
-        changerPasswordRequestDTO.setOldPassword("99");
-        changerPasswordRequestDTO.setNewPassword("2222");
-        assertEquals(changePassword(changerPasswordRequestDTO), "Wrong password");
+        user.setUsername("Lil");
+        user.setPassword("99");
+        user.setNewPassword("2222");
+        assertEquals(changePassword(user), "Wrong password");
     }
 
     @Test
     public void changePassword_WhenPasswordWasChanged() {
-        changerPasswordRequestDTO.setUsername("Lil");
-        changerPasswordRequestDTO.setOldPassword("999");
-        changerPasswordRequestDTO.setNewPassword("2222");
-        assertEquals(changePassword(changerPasswordRequestDTO), "Password was changed successfully. Your new login details:\nusername: " +
-                changerPasswordRequestDTO.getUsernameChangerDTO() + "\npassword: " + changerPasswordRequestDTO.getNewPassword())
+        user.setUsername("Lil");
+        user.setPassword("999");
+        user.setNewPassword("2222");
+        assertEquals(changePassword(user), "Password was changed successfully. Your new login details:\nusername: " +
+                user.getUsername() + "\npassword: " + user.getNewPassword())
         ;
     }
 
 
     @Test // 5 тестов сервиса по входу юзера
     public void signInUser_WhenUsernameIncorrect() {
-        userRequestDTO.setUsername("");
-        userRequestDTO.setPassword("4444");
-        assertEquals(signInUser(userRequestDTO), "Username is incorrect");
+        user.setUsername("");
+        user.setPassword("4444");
+        assertEquals(signInUser(user), "Username is incorrect");
     }
 
     @Test
     public void signInUser_WhenUsernameNotFound() {
-        userRequestDTO.setUsername("Kira");
-        userRequestDTO.setPassword("4444");
-        assertEquals(signInUser(userRequestDTO), "The user was not found");
+        user.setUsername("Kira");
+        user.setPassword("4444");
+        assertEquals(signInUser(user), "The user was not found");
     }
 
     @Test
     public void signInUser_WhenPasswordIncorrect() {
-        userRequestDTO.setUsername("Lil");
-        userRequestDTO.setPassword("");
-        assertEquals(signInUser(userRequestDTO), "Password is incorrect format:(");
+        user.setUsername("Lil");
+        user.setPassword("");
+        assertEquals(signInUser(user), "Password is incorrect format:(");
     }
 
     @Test
     public void signInUser_WhenPasswordIsWrong() {
-        userRequestDTO.setUsername("Lil");
-        userRequestDTO.setPassword("1999");
-        assertEquals(signInUser(userRequestDTO), "Wrong password");
+        user.setUsername("Lil");
+        user.setPassword("1999");
+        assertEquals(signInUser(user), "Wrong password");
     }
 
     @Test
     public void signInUser_WhenAllCorrect() {
-        userRequestDTO.setUsername("Lil");
-        userRequestDTO.setPassword("999");
-        assertEquals(signInUser(userRequestDTO), "Successful login. Congratulations");
+        user.setUsername("Lil");
+        user.setPassword("999");
+        assertEquals(signInUser(user), "Successful login. Congratulations");
     }
 
 
     @Test // 5 тестов сервиса регистрации юзера
     public void signUpUser_WhenUsernameIncorrect() {
-        userRequestDTO.setUsername("");
-        userRequestDTO.setPassword("123");
-        assertEquals(signUpUser(userRequestDTO), "Username is incorrect format");
+        user.setUsername("");
+        user.setPassword("123");
+        assertEquals(signUpUser(user), "Username is incorrect format");
     }
 
     @Test
     public void signUpUser_WhenUserHasAlreadyAdded() {
-        userRequestDTO.setUsername("Lil");
-        userRequestDTO.setPassword("123");
-        assertEquals(signUpUser(userRequestDTO), "Oh no! The user has already been added once");
+        user.setUsername("Lil");
+        user.setPassword("123");
+        assertEquals(signUpUser(user), "Oh no! The user has already been added once");
     }
 
     @Test
     public void signUpUser_WhenPasswordIncorrect() {
-        userRequestDTO.setUsername("Mks");
-        userRequestDTO.setPassword("");
-        assertEquals(signUpUser(userRequestDTO), "Password is incorrect format :(");
+        user.setUsername("Mks");
+        user.setPassword("");
+        assertEquals(signUpUser(user), "Password is incorrect format :(");
     }
 
     @Test
     public void signUpUser_WhenUserHasBeenAdded() {
-        userRequestDTO.setUsername("Mks");
-        userRequestDTO.setPassword("321");
-        assertEquals(signUpUser(userRequestDTO), "User has been added:\nlogin: " + userRequestDTO.getUsername() + "\npassword: " + userRequestDTO.getPassword());
+        user.setUsername("Mks");
+        user.setPassword("321");
+        assertEquals(signUpUser(user), "User has been added:\nlogin: " + user.getUsername() + "\npassword: " + user.getPassword());
 
     }
 

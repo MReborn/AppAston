@@ -1,10 +1,11 @@
-package com.maximbuza.appaston.operations;
+package com.maximbuza.appaston.domainService;
 
-import com.maximbuza.appaston.dto.ChangerPasswordRequestDTO;
-import com.maximbuza.appaston.dto.SignInAndUpRequestDTO;
+
+import com.maximbuza.appaston.dto.User;
 import com.maximbuza.appaston.storage.Storage;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -13,13 +14,13 @@ import static com.maximbuza.appaston.storage.Storage.*;
 import static org.junit.Assert.*;
 
 public class StorageOperationsTest extends StorageOperations {
-    public ChangerPasswordRequestDTO changerPasswordRequestDTO;
-    public SignInAndUpRequestDTO userRequestDTO;
+    @Mock
+    private User user;
 
     @Before
     public void init() {                                                // в этом блоке меняем hashmap на кастомный с данными, используя рефлексию.
-        userRequestDTO = new SignInAndUpRequestDTO();      // Также создаем контейнеры для данных пользователя чтоб тесты были короче
-        changerPasswordRequestDTO = new ChangerPasswordRequestDTO();
+        user = new User();     // Также создаем контейнер для данных пользователя чтоб тесты были короче
+
         HashMap<String, String> userAccounts = new HashMap<>() {{
             put("Lil", "999");
             put("Max", "12345");
@@ -34,6 +35,7 @@ public class StorageOperationsTest extends StorageOperations {
             throw new RuntimeException(e);
         }
     }
+
     @Test // 2 теста на проверку существует ли пользователь в хранилище
     public void isExistUser_ShouldTrue_WhenUserExist() {
         assertTrue(isUserExist("Max"));
@@ -43,6 +45,7 @@ public class StorageOperationsTest extends StorageOperations {
     public void isExistUser_ShouldFalse_WhenUserNotExist() {
         assertFalse(isUserExist("Gena"));
     }
+
     @Test // тест на проверку поменялся ли пароль в хранилище на указанный
     public void setNewPassword_WhenPasswordSetInStorage() {
         setPassword("Var", "555");
@@ -50,7 +53,7 @@ public class StorageOperationsTest extends StorageOperations {
     }
 
     @Test // тест метода по возвращению пароль по юзернейму из хранилища
-    public void getPassword_Test(){
-        assertEquals(getPasswordFromStorage("Lil"),userAccounts.get("Lil"));
+    public void getPassword_Test() {
+        assertEquals(getPasswordFromStorage("Lil"), userAccounts.get("Lil"));
     }
 }

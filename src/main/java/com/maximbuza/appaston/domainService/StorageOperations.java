@@ -1,4 +1,4 @@
-package com.maximbuza.appaston.operations;
+package com.maximbuza.appaston.domainService;
 
 import static com.maximbuza.appaston.storage.Storage.*;
 
