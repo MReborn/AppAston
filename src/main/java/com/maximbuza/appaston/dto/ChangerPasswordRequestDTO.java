@@ -3,30 +3,29 @@ package com.maximbuza.appaston.dto;
 public class ChangerPasswordRequestDTO {
     private String username;
     private String oldPassword;
-
     private String newPassword;
 
-    public String getUsername() {
+    public String getUsernameChangerDTO() {
         return username;
     }
 
-    public String getOldPassword() {
+    public String getOldPasswordChangerDTO() {
         return oldPassword;
     }
 
-    public String getNewPassword() {
+    public String getNewPasswordChangerDTO() {
         return newPassword;
     }
 
-    public void setUsername(String username) {
+    public void setUsernameChangerDTO(String username) {
         this.username = username;
     }
 
-    public void setOldPassword(String oldPassword) {
+    public void setOldPasswordChangerDTO(String oldPassword) {
         this.oldPassword = oldPassword;
     }
 
-    public void setNewPassword(String newPassword) {
+    public void setNewPasswordChangerDTO(String newPassword) {
         this.newPassword = newPassword;
     }
 }
