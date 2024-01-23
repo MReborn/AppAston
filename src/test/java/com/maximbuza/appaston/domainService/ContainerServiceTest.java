@@ -1,11 +1,8 @@
 package com.maximbuza.appaston.domainService;
 
-
-import com.maximbuza.appaston.dto.User;
 import com.maximbuza.appaston.storage.Storage;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -14,13 +11,9 @@ import static com.maximbuza.appaston.storage.Storage.*;
 import static org.junit.Assert.*;
 
 public class ContainerServiceTest extends ContainerService {
-    @Mock
-    private User user;
 
     @Before
     public void init() {                                                // в этом блоке меняем hashmap на кастомный с данными, используя рефлексию.
-        user = new User();     // Также создаем контейнер для данных пользователя чтоб тесты были короче
-
         HashMap<String, String> userAccounts = new HashMap<>() {{
             put("Lil", "999");
             put("Max", "12345");

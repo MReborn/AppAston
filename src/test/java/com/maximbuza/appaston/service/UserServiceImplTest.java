@@ -2,6 +2,10 @@ package com.maximbuza.appaston.service;
 
 
 import com.maximbuza.appaston.dto.User;
+import com.maximbuza.appaston.exception.BadDataException;
+import com.maximbuza.appaston.exception.ConflictException;
+import com.maximbuza.appaston.exception.NotFoundException;
+import com.maximbuza.appaston.exception.UnauthorizedException;
 import com.maximbuza.appaston.storage.Storage;
 
 import org.junit.Before;
@@ -40,40 +44,40 @@ public class UserServiceImplTest extends UserServiceImpl {
     }
 
 
-    @Test // 6 тестов сервиса смены пароля
+    @Test(expected = BadDataException.class) // 6 тестов сервиса смены пароля
     public void changePassword_WhenUsernameIncorrect() {
         user.setUsername("");
-        assertEquals(changePassword(user), "Username is incorrect");
+        changePassword(user);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void changePassword_WhenUsernameNotFound() {
         user.setUsername("Kira");
-        assertEquals(changePassword(user), "The user was not found");
+        changePassword(user);
     }
 
-    @Test
+    @Test(expected = BadDataException.class)
     public void changePassword_WhenOldPasswordIncorrect() {
         user.setUsername("Lil");
         user.setPassword("");
         user.setNewPassword("2222");
-        assertEquals(changePassword(user), "Some of the Passwords in the wrong format :(");
+        changePassword(user);
     }
 
-    @Test
+    @Test(expected = BadDataException.class)
     public void changePassword_WhenNewPasswordIncorrect() {
         user.setUsername("Lil");
         user.setPassword("3333");
         user.setNewPassword("");
-        assertEquals(changePassword(user), "Some of the Passwords in the wrong format :(");
+        changePassword(user);
     }
 
-    @Test
+    @Test(expected = UnauthorizedException.class)
     public void changePassword_WhenPasswordIsWrong() {
         user.setUsername("Lil");
         user.setPassword("99");
         user.setNewPassword("2222");
-        assertEquals(changePassword(user), "Wrong password");
+        changePassword(user);
     }
 
     @Test
@@ -87,32 +91,32 @@ public class UserServiceImplTest extends UserServiceImpl {
     }
 
 
-    @Test // 5 тестов сервиса по входу юзера
+    @Test(expected = BadDataException.class) // 5 тестов сервиса по входу юзера
     public void signInUser_WhenUsernameIncorrect() {
         user.setUsername("");
         user.setPassword("4444");
-        assertEquals(signInUser(user), "Username is incorrect");
+        signInUser(user);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void signInUser_WhenUsernameNotFound() {
         user.setUsername("Kira");
         user.setPassword("4444");
-        assertEquals(signInUser(user), "The user was not found");
+        signInUser(user);
     }
 
-    @Test
+    @Test(expected = BadDataException.class)
     public void signInUser_WhenPasswordIncorrect() {
         user.setUsername("Lil");
         user.setPassword("");
-        assertEquals(signInUser(user), "Password is incorrect format:(");
+        signInUser(user);
     }
 
-    @Test
+    @Test(expected = UnauthorizedException.class)
     public void signInUser_WhenPasswordIsWrong() {
         user.setUsername("Lil");
         user.setPassword("1999");
-        assertEquals(signInUser(user), "Wrong password");
+        signInUser(user);
     }
 
     @Test
@@ -123,25 +127,25 @@ public class UserServiceImplTest extends UserServiceImpl {
     }
 
 
-    @Test // 5 тестов сервиса регистрации юзера
+    @Test(expected = BadDataException.class) // 5 тестов сервиса регистрации юзера
     public void signUpUser_WhenUsernameIncorrect() {
         user.setUsername("");
         user.setPassword("123");
         assertEquals(signUpUser(user), "Username is incorrect format");
     }
 
-    @Test
+    @Test(expected = ConflictException.class)
     public void signUpUser_WhenUserHasAlreadyAdded() {
         user.setUsername("Lil");
         user.setPassword("123");
-        assertEquals(signUpUser(user), "Oh no! The user has already been added once");
+        signUpUser(user);
     }
 
-    @Test
+    @Test(expected = BadDataException.class)
     public void signUpUser_WhenPasswordIncorrect() {
         user.setUsername("Mks");
         user.setPassword("");
-        assertEquals(signUpUser(user), "Password is incorrect format :(");
+        signUpUser(user);
     }
 
     @Test
