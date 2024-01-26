@@ -28,4 +28,10 @@ public class User {
     public void setNewPassword(String newPassword) {
         NewPassword = newPassword;
     }
+
+    @Override
+    public String toString() {
+        return "username='" + username + '\'' +
+                ", password='" + password;
+    }
 }
