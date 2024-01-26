@@ -9,7 +9,6 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +23,7 @@ public class UserRepository {
 
     public List<User> getAllUsersFromBd() { // получает список всех работников в бд. Работает
         try (Session session = sessionFactoryConfig.getSession()) {
-            List<UserEntity> userEntities = session.createQuery("from UserEntity", UserEntity.class).getResultList();
+            List<UserEntity> userEntities = session.createQuery("from UserEntity ORDER BY id ASC", UserEntity.class).getResultList();
             if (userEntities.isEmpty()) {
                 throw new NotFoundException("No users in the repository");
             }
@@ -53,9 +52,11 @@ public class UserRepository {
             return count > 0;
         }
     }
-    @Transactional
+
+
     public void addUserOrUpdatePassword(String username, String password) {
         try (Session session = sessionFactoryConfig.getSession()) {
+            session.beginTransaction();
             UserEntity userEntity = session.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class)
                     .setParameter("username", username)
                     .uniqueResult();
@@ -66,8 +67,17 @@ public class UserRepository {
             userEntity.setPassword(password);
 
             session.saveOrUpdate(userEntity);
+            session.flush();
         }
+    }
 
 
+    public boolean isPasswordMatch(String username, String passwordPossible) {
+        try (Session session = sessionFactoryConfig.getSession()) {
+            UserEntity userEntity = session.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class)
+                    .setParameter("username", username)
+                    .uniqueResult();
+            return userEntity.getPassword().equals(passwordPossible);
+        }
     }
 }
