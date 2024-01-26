@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -51,5 +52,22 @@ public class UserRepository {
             // Если количество больше 0, пользователь с таким именем существует
             return count > 0;
         }
+    }
+    @Transactional
+    public void addUserOrUpdatePassword(String username, String password) {
+        try (Session session = sessionFactoryConfig.getSession()) {
+            UserEntity userEntity = session.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class)
+                    .setParameter("username", username)
+                    .uniqueResult();
+            if (userEntity == null) {
+                userEntity = new UserEntity();
+                userEntity.setUsername(username);
+            }
+            userEntity.setPassword(password);
+
+            session.saveOrUpdate(userEntity);
+        }
+
+
     }
 }
