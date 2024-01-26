@@ -2,14 +2,11 @@ package com.maximbuza.appaston.controller;
 
 
 import com.maximbuza.appaston.dto.User;
-import com.maximbuza.appaston.entity.UserEntity;
 import com.maximbuza.appaston.service.ServiceBD;
 import com.maximbuza.appaston.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -52,6 +49,16 @@ public class UserController {
     @PostMapping("/signUpUserForBD") //регистрация юзера
     public ResponseEntity<String> signUpUserForBD(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
         return ResponseEntity.status(201).body(serviceBD.signUpUser(user));
+    }
+
+    @PostMapping("/signInUserForBD") //вход юзера
+    public ResponseEntity<String> signInUserForBD(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
+        return ResponseEntity.ok(serviceBD.signInUserFromBD(user));
+    }
+
+    @PostMapping("/changePasswordForBD") //смена пароля
+    public ResponseEntity<String> changePasswordFromBD(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
+        return ResponseEntity.ok(serviceBD.changePasswordForBD(user));
     }
 }
 
