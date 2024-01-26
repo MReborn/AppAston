@@ -48,6 +48,11 @@ public class UserController {
     public ResponseEntity<String> getAllUsersFromBd() {
         return ResponseEntity.ok(serviceBD.getAllUsersFromBd());
     } // делегирует запрос сервису
+
+    @PostMapping("/signUpUserForBD") //регистрация юзера
+    public ResponseEntity<String> signUpUserForBD(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
+        return ResponseEntity.status(201).body(serviceBD.signUpUser(user));
+    }
 }
 
 
