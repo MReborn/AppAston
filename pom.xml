@@ -95,6 +95,12 @@
             <artifactId>spring-context</artifactId>
             <version>5.2.12.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
