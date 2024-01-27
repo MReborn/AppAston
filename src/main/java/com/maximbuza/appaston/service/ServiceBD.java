@@ -1,14 +1,9 @@
 package com.maximbuza.appaston.service;
 
 import com.maximbuza.appaston.dto.User;
-import com.maximbuza.appaston.exception.BadDataException;
-import com.maximbuza.appaston.exception.ConflictException;
-import com.maximbuza.appaston.exception.NotFoundException;
-import com.maximbuza.appaston.exception.UnauthorizedException;
+import com.maximbuza.appaston.exception.*;
 import com.maximbuza.appaston.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
-import static com.maximbuza.appaston.domainService.ContainerService.getPasswordFromStorage;
 
 @Service
 public class ServiceBD {
@@ -34,7 +29,7 @@ public class ServiceBD {
         if (isPasswordIncorrectFormat(passwordPossible)) { // проверка на некорректный пароль
             throw new BadDataException("Password is incorrect format:(");
         }
-        userRepository.addUserOrUpdatePassword(usernamePossible, passwordPossible); // если все проверки пройдены то помещает данные в хранилище через спецкласс
+        userRepository.saveOrUpdateUser(user); // если все проверки пройдены то помещает данные в хранилище через спецкласс
         return "User has been added:\nlogin: " + usernamePossible + "\npassword: " + passwordPossible;
     }
     public static boolean isUserIncorrect(String username) {
@@ -77,13 +72,11 @@ public class ServiceBD {
             throw new BadDataException("Some of the Passwords in the wrong format :(");
         }
         if (userRepository.isPasswordMatch(username, oldPassword)) { // если все условия выполнены то пароль сменится
-            userRepository.addUserOrUpdatePassword(username, newPassword);
+            userRepository.saveOrUpdateUser(user);
             return "Password was changed successfully. Your new login details:\nusername: " + username + "\npassword: " + newPassword;
         } else {
             throw new UnauthorizedException("Wrong old password");
         }
     }
-    public static boolean isPasswordMatch(String username, String passwordPossible) { // метод проверяет совпадают ли пароль в хранилище с переданным паролем
-        return getPasswordFromStorage(username).equals(passwordPossible); // подтягивает через юзернейм и сравнивает с параметром
-    }
+
 }
