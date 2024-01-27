@@ -6,13 +6,12 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 
 @Service
-public class SessionFactoryConfig {
-    private SessionFactory sessionFactory;
+public class SessionFactory {
+    private org.hibernate.SessionFactory sessionFactory;
 
     @PostConstruct
     void init() {

@@ -43,7 +43,7 @@ public class UserController {
 
     @GetMapping("/getAllUsersFromBD") // по этому адресу можно вызвать get запрос и получить список юзеров
     public ResponseEntity<String> getAllUsersFromBd() {
-        return ResponseEntity.ok(serviceBD.getAllUsersFromBd());
+        return ResponseEntity.ok(serviceBD.getAllUsers());
     } // делегирует запрос сервису
 
     @PostMapping("/signUpUserForBD") //регистрация юзера
@@ -53,12 +53,12 @@ public class UserController {
 
     @PostMapping("/signInUserForBD") //вход юзера
     public ResponseEntity<String> signInUserForBD(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
-        return ResponseEntity.ok(serviceBD.signInUserFromBD(user));
+        return ResponseEntity.ok(serviceBD.signInUser(user));
     }
 
     @PostMapping("/changePasswordForBD") //смена пароля
     public ResponseEntity<String> changePasswordFromBD(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
-        return ResponseEntity.ok(serviceBD.changePasswordForBD(user));
+        return ResponseEntity.ok(serviceBD.changePassword(user));
     }
 }
 

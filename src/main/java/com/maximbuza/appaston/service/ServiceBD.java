@@ -8,7 +8,8 @@ import com.maximbuza.appaston.exception.UnauthorizedException;
 import com.maximbuza.appaston.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import static com.maximbuza.appaston.service.UserServiceImpl.*;
+import static com.maximbuza.appaston.domainService.ContainerService.getPasswordFromStorage;
+
 @Service
 public class ServiceBD {
     public ServiceBD(UserRepository userRepository) {
@@ -17,7 +18,7 @@ public class ServiceBD {
 
     private final UserRepository userRepository;
 
-    public String getAllUsersFromBd() {
+    public String getAllUsers() {
         return "List of user usernames and passwords:\n" + userRepository.getAllUsersFromBd();
     } // просит вернуть всех юзеров класс, работающий с хранилищем
 
@@ -36,8 +37,15 @@ public class ServiceBD {
         userRepository.addUserOrUpdatePassword(usernamePossible, passwordPossible); // если все проверки пройдены то помещает данные в хранилище через спецкласс
         return "User has been added:\nlogin: " + usernamePossible + "\npassword: " + passwordPossible;
     }
+    public static boolean isUserIncorrect(String username) {
+        return username.equals("");
+    } // проверка пустая ли строка
 
-    public String signInUserFromBD(User user) { //вход юзера
+    public static boolean isPasswordIncorrectFormat(String password) {
+        return password.equals("");
+    } // проверяет пустой ли пароль и возвращает правду если пустой
+
+    public String signInUser(User user) { //вход юзера
         String username = user.getUsername();
         String password = user.getPassword();
         if (isUserIncorrect(username)) {
@@ -54,7 +62,7 @@ public class ServiceBD {
         } else throw new UnauthorizedException("Wrong password");
     }
 
-    public String changePasswordForBD(User user) { //смена пароля
+    public String changePassword(User user) { //смена пароля
         String username = user.getUsername();
         String oldPassword = user.getPassword();
         String newPassword = user.getNewPassword();
@@ -74,5 +82,8 @@ public class ServiceBD {
         } else {
             throw new UnauthorizedException("Wrong old password");
         }
+    }
+    public static boolean isPasswordMatch(String username, String passwordPossible) { // метод проверяет совпадают ли пароль в хранилище с переданным паролем
+        return getPasswordFromStorage(username).equals(passwordPossible); // подтягивает через юзернейм и сравнивает с параметром
     }
 }

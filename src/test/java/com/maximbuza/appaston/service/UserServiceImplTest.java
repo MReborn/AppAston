@@ -21,7 +21,6 @@ import static org.junit.Assert.assertTrue;
 
 public class UserServiceImplTest extends UserServiceImpl {
 
-    @Mock
     private User user;
 
     @Before
