@@ -5,7 +5,6 @@ import com.maximbuza.appaston.dto.User;
 import com.maximbuza.appaston.entity.UserEntity;
 import com.maximbuza.appaston.exception.NotFoundException;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -37,40 +36,37 @@ public class UserRepository {
     }
 
     public boolean isUserExist(String username) { // проверяет существование пользователя в бд по юзернейму.
-        try (Session session = sessionFactory.getSession()) {
-            String hql = "SELECT COUNT(*) FROM UserEntity WHERE username = :username"; // считает количество пользователей с юзернеймом в параметрах
-            Query<Long> query = session.createQuery(hql, Long.class);
-            query.setParameter("username", username);
-            Long count = query.uniqueResult();
-            return count > 0; // если количество больше 0 то пользователь в бд существует
-        }
+        return findByUsername(username) != null;
     }
-
-
-    public void addUserOrUpdatePassword(String username, String password) { // если пользователя нет в бд, то добавит нового,
-        try (Session session = sessionFactory.getSession()) {               // если username уже такой есть, то обновит пароль
-            session.beginTransaction();
-            UserEntity userEntity = session.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class)
+    private UserEntity findByUsername(String username) {
+        try (Session session = sessionFactory.getSession()) {                  // с паролем в бд
+            return session.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class)
                     .setParameter("username", username)
                     .uniqueResult();
-            if (userEntity == null) { // если не нашел - создаст юзера
-                userEntity = new UserEntity();
-                userEntity.setUsername(username);
-            }
-            userEntity.setPassword(password);
-
-            session.saveOrUpdate(userEntity); // либо добавит пользователя, либо обновит
-            session.flush();                  // синхронизация изменений с бд
         }
     }
-
 
     public boolean isPasswordMatch(String username, String passwordPossible) { // проверка на совпадение указанного пароля в параметрах
-        try (Session session = sessionFactory.getSession()) {                  // с паролем в бд
-            UserEntity userEntity = session.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class)
-                    .setParameter("username", username)
-                    .uniqueResult();
-            return userEntity.getPassword().equals(passwordPossible);
+        UserEntity userEntity = findByUsername(username);
+        return userEntity.getPassword().equals(passwordPossible);
+    }
+
+    public void saveOrUpdateUser(User user) {
+        UserEntity userEntity = findByUsername(user.getUsername());
+        if (userEntity == null) { // если не нашел - создаст юзера
+            userEntity = new UserEntity();
+            userEntity.setUsername(user.getUsername());
+            userEntity.setPassword(user.getPassword());
+        } else { // если нашел - значит обновляем пароль
+            userEntity.setPassword(user.getNewPassword());
+        }
+        try (Session session = sessionFactory.getSession()) {               // если username уже такой есть, то обновит пароль
+            session.beginTransaction();
+            session.saveOrUpdate(userEntity); // либо добавит пользователя, либо обновит
+            session.flush();
+            // синхронизация изменений с бд
         }
     }
+
+
 }
