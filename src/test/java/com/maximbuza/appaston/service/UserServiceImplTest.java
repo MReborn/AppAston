@@ -10,7 +10,6 @@ import com.maximbuza.appaston.storage.Storage;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
