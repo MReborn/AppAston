@@ -25,8 +25,8 @@ public class UserRepository {
             if (userEntities.isEmpty()) { // если список юзеров пуст бросает 404
                 throw new NotFoundException("No users in the repository");
             }
-            List<UserDTO> userDtoList = new ArrayList<>();
-            for (UserEntity userEntity : userEntities) {
+            List<UserDTO> userDtoList = new ArrayList<>(); // создаю лист DTO юзера для корректного отображения
+            for (UserEntity userEntity : userEntities) {   // и для того, чтобы оставить только нужные поля
                 UserDTO user = new UserDTO();
                 user.setUsername(userEntity.getUsername());
                 user.setPassword(userEntity.getPassword());
@@ -42,7 +42,7 @@ public class UserRepository {
             userEntity = new UserEntity();
             userEntity.setUsername(username);
         }
-        userEntity.setPassword(password);
+        userEntity.setPassword(password); // добавление/смена пароля
 
         try (Session session = sessionFactory.getSession()) {
             session.beginTransaction();

@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService{
 
     public boolean isUserExist(String username) { // проверяет существование пользователя в бд по юзернейму.
         return userRepository.findByUsername(username) != null;
-    }
+    } // ищет пользователя по username. возвращает true если находит
 
     public static boolean isPasswordIncorrectFormat(String password) {
         return password.equals("");

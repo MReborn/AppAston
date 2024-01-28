@@ -1,5 +1,5 @@
 package com.maximbuza.appaston.dto;
-public class ChangePasswordDTO {
+public class ChangePasswordDTO { // нужен для смены пароля пользователя
     private String username;
     private String oldPassword;
     private String newPassword;
