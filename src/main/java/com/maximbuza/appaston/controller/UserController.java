@@ -1,7 +1,8 @@
 package com.maximbuza.appaston.controller;
 
 
-import com.maximbuza.appaston.dto.User;
+import com.maximbuza.appaston.dto.ChangePasswordDTO;
+import com.maximbuza.appaston.dto.UserDTO;
 import com.maximbuza.appaston.service.ServiceBD;
 import com.maximbuza.appaston.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +28,18 @@ public class UserController {
     } // делегирует запрос сервису
 
     @PostMapping("/signUpUser") //регистрация юзера
-    public ResponseEntity<String> signUpUser(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
+    public ResponseEntity<String> signUpUser(@RequestBody UserDTO user) { // образует контейнер данных пользователя и передает сервису
         return ResponseEntity.status(201).body(userService.signUpUser(user));
     }
 
     @PostMapping("/signInUser") //вход юзера
-    public ResponseEntity<String> signInUser(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
+    public ResponseEntity<String> signInUser(@RequestBody UserDTO user) { // образует контейнер данных пользователя и передает сервису
         return ResponseEntity.ok(userService.signInUser(user));
     }
 
     @PostMapping("/changePassword") //смена пароля
-    public ResponseEntity<String> changePassword(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
-        return ResponseEntity.ok(userService.changePassword(user));
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) { // образует контейнер данных пользователя и передает сервису
+        return ResponseEntity.ok(userService.changePassword(changePasswordDTO));
     }
 
     @GetMapping("/getAllUsersFromBD") // по этому адресу можно вызвать get запрос и получить список юзеров
@@ -47,18 +48,18 @@ public class UserController {
     } // делегирует запрос сервису
 
     @PostMapping("/signUpUserForBD") //регистрация юзера
-    public ResponseEntity<String> signUpUserForBD(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
+    public ResponseEntity<String> signUpUserForBD(@RequestBody UserDTO user) { // образует контейнер данных пользователя и передает сервису
         return ResponseEntity.status(201).body(serviceBD.signUpUser(user));
     }
 
     @PostMapping("/signInUserForBD") //вход юзера
-    public ResponseEntity<String> signInUserForBD(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
+    public ResponseEntity<String> signInUserForBD(@RequestBody UserDTO user) { // образует контейнер данных пользователя и передает сервису
         return ResponseEntity.ok(serviceBD.signInUser(user));
     }
 
     @PostMapping("/changePasswordForBD") //смена пароля
-    public ResponseEntity<String> changePasswordFromBD(@RequestBody User user) { // образует контейнер данных пользователя и передает сервису
-        return ResponseEntity.ok(serviceBD.changePassword(user));
+    public ResponseEntity<String> changePasswordFromBD(@RequestBody ChangePasswordDTO changePasswordDTO) { // образует контейнер данных пользователя и передает сервису
+        return ResponseEntity.ok(serviceBD.changePassword(changePasswordDTO));
     }
 }
 
