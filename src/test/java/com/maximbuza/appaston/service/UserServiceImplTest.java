@@ -1,7 +1,8 @@
 package com.maximbuza.appaston.service;
 
 
-import com.maximbuza.appaston.dto.User;
+import com.maximbuza.appaston.dto.ChangePasswordDTO;
+import com.maximbuza.appaston.dto.UserDTO;
 import com.maximbuza.appaston.exception.BadDataException;
 import com.maximbuza.appaston.exception.ConflictException;
 import com.maximbuza.appaston.exception.NotFoundException;
@@ -20,11 +21,13 @@ import static org.junit.Assert.assertTrue;
 
 public class UserServiceImplTest extends UserServiceImpl {
 
-    private User user;
+    private UserDTO user;
+    private ChangePasswordDTO changePasswordDTO;
 
     @Before
     public void init() {    // в этом блоке меняем hashmap на кастомный с данными, используя рефлексию.
-        user = new User();
+        user = new UserDTO();
+        changePasswordDTO = new ChangePasswordDTO();
         HashMap<String, String> userAccounts = new HashMap<>() {{
             put("Lil", "999");
             put("Max", "12345");
@@ -44,48 +47,47 @@ public class UserServiceImplTest extends UserServiceImpl {
 
     @Test(expected = BadDataException.class) // 6 тестов сервиса смены пароля
     public void changePassword_WhenUsernameIncorrect() {
-        user.setUsername("");
-        changePassword(user);
+        changePasswordDTO.setUsername("");
+        changePassword(changePasswordDTO);
     }
 
     @Test(expected = NotFoundException.class)
     public void changePassword_WhenUsernameNotFound() {
-        user.setUsername("Kira");
-        changePassword(user);
+        changePasswordDTO.setUsername("Kira");
+        changePassword(changePasswordDTO);
     }
 
     @Test(expected = BadDataException.class)
     public void changePassword_WhenOldPasswordIncorrect() {
-        user.setUsername("Lil");
-        user.setPassword("");
-        user.setNewPassword("2222");
-        changePassword(user);
+        changePasswordDTO.setUsername("Lil");
+        changePasswordDTO.setOldPassword("");
+        changePasswordDTO.setNewPassword("2222");
+        changePassword(changePasswordDTO);
     }
 
     @Test(expected = BadDataException.class)
     public void changePassword_WhenNewPasswordIncorrect() {
-        user.setUsername("Lil");
-        user.setPassword("3333");
-        user.setNewPassword("");
-        changePassword(user);
+        changePasswordDTO.setUsername("Lil");
+        changePasswordDTO.setOldPassword("3333");
+        changePasswordDTO.setNewPassword("");
+        changePassword(changePasswordDTO);
     }
 
     @Test(expected = UnauthorizedException.class)
     public void changePassword_WhenPasswordIsWrong() {
-        user.setUsername("Lil");
-        user.setPassword("99");
-        user.setNewPassword("2222");
-        changePassword(user);
+        changePasswordDTO.setUsername("Lil");
+        changePasswordDTO.setOldPassword("99");
+        changePasswordDTO.setNewPassword("2222");
+        changePassword(changePasswordDTO);
     }
 
     @Test
     public void changePassword_WhenPasswordWasChanged() {
-        user.setUsername("Lil");
-        user.setPassword("999");
-        user.setNewPassword("2222");
-        assertEquals(changePassword(user), "Password was changed successfully. Your new login details:\nusername: " +
-                user.getUsername() + "\npassword: " + user.getNewPassword())
-        ;
+        changePasswordDTO.setUsername("Lil");
+        changePasswordDTO.setOldPassword("999");
+        changePasswordDTO.setNewPassword("2222");
+        assertEquals(changePassword(changePasswordDTO), "Password was changed successfully. Your new login details:\nusername: " +
+                changePasswordDTO.getUsername() + "\npassword: " + changePasswordDTO.getNewPassword());
     }
 
 
@@ -129,7 +131,7 @@ public class UserServiceImplTest extends UserServiceImpl {
     public void signUpUser_WhenUsernameIncorrect() {
         user.setUsername("");
         user.setPassword("123");
-        assertEquals(signUpUser(user), "Username is incorrect format");
+        assertEquals(signUpUser(user), "Username is incorrect format1");
     }
 
     @Test(expected = ConflictException.class)
