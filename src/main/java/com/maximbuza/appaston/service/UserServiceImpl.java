@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ServiceBD {
-    public ServiceBD(@Autowired UserRepository userRepository) {
+public class UserServiceImpl implements UserService{
+    public UserServiceImpl(@Autowired UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -91,5 +91,4 @@ public class ServiceBD {
             throw new UnauthorizedException("Wrong old password");
         }
     }
-
 }

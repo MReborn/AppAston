@@ -59,15 +59,4 @@ public class UserRepository {
         }
     }
 
-    public void deleteUser(String username) {
-        UserEntity userEntity = findByUsername(username);
-        try (Session session = sessionFactory.getSession()) {
-            session.beginTransaction();
-            session.delete(userEntity); // либо добавит пользователя, либо обновит
-            session.flush();                  // синхронизация изменений с бд
-        }
-
-    }
-
-
 }
