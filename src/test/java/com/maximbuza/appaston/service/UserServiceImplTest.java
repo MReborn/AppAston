@@ -23,7 +23,7 @@ public class UserServiceImplTest {
     @Mock
     UserRepository userRepository;
     @InjectMocks
-    UserServiceImpl userServiceImpl;
+    UserServiceImpl userService;
     UserDTO userDTO;
     UserEntity userEntity;
     ChangePasswordDTO changePasswordDTO;
@@ -39,7 +39,7 @@ public class UserServiceImplTest {
     public void signInUser_WhenUsernameIncorrect() {
         userDTO.setUsername("");
         userDTO.setPassword("4444");
-        userServiceImpl.signInUser(userDTO);
+        userService.signInUser(userDTO);
     }
 
     @Test(expected = NotFoundException.class)
@@ -47,7 +47,7 @@ public class UserServiceImplTest {
         userDTO.setUsername("Kira");
         userDTO.setPassword("4444");
         when(userRepository.findByUsername(userDTO.getUsername())).thenReturn(null);
-        userServiceImpl.signInUser(userDTO);
+        userService.signInUser(userDTO);
     }
 
     @Test(expected = BadDataException.class)
@@ -55,7 +55,7 @@ public class UserServiceImplTest {
         userDTO.setUsername("Lil");
         userDTO.setPassword("");
         when(userRepository.findByUsername(userDTO.getUsername())).thenReturn(userEntity);
-        userServiceImpl.signInUser(userDTO);
+        userService.signInUser(userDTO);
     }
 
     @Test(expected = UnauthorizedException.class)
@@ -65,7 +65,7 @@ public class UserServiceImplTest {
         userEntity.setUsername("Lil");
         userEntity.setPassword("999");
         when(userRepository.findByUsername(userDTO.getUsername())).thenReturn(userEntity);
-        userServiceImpl.signInUser(userDTO);
+        userService.signInUser(userDTO);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class UserServiceImplTest {
         userEntity.setUsername("Lil");
         userEntity.setPassword("999");
         when(userRepository.findByUsername(userDTO.getUsername())).thenReturn(userEntity);
-        assertEquals(userServiceImpl.signInUser(userDTO), "Successful login. Congratulations");
+        assertEquals(userService.signInUser(userDTO), "Successful login. Congratulations");
     }
 
 
@@ -83,7 +83,7 @@ public class UserServiceImplTest {
     public void signUpUser_WhenUsernameIncorrect() {
         userDTO.setUsername("");
         userDTO.setPassword("123");
-        userServiceImpl.signUpUser(userDTO);
+        userService.signUpUser(userDTO);
     }
 
     @Test(expected = ConflictException.class)
@@ -93,7 +93,7 @@ public class UserServiceImplTest {
         userEntity.setUsername("Lil");
         userEntity.setPassword("999");
         when(userRepository.findByUsername(userDTO.getUsername())).thenReturn(userEntity);
-        userServiceImpl.signUpUser(userDTO);
+        userService.signUpUser(userDTO);
     }
 
     @Test(expected = BadDataException.class)
@@ -101,7 +101,7 @@ public class UserServiceImplTest {
         userDTO.setUsername("Mks");
         userDTO.setPassword("");
         when(userRepository.findByUsername(userDTO.getUsername())).thenReturn(null);
-        userServiceImpl.signUpUser(userDTO);
+        userService.signUpUser(userDTO);
     }
 
     @Test
@@ -109,7 +109,7 @@ public class UserServiceImplTest {
         userDTO.setUsername("Mks");
         userDTO.setPassword("321");
         when(userRepository.findByUsername(userDTO.getUsername())).thenReturn(null);
-        assertEquals(userServiceImpl.signUpUser(userDTO), "User has been added:\nlogin: " + userDTO.getUsername() + "\npassword: " + userDTO.getPassword());
+        assertEquals(userService.signUpUser(userDTO), "User has been added:\nlogin: " + userDTO.getUsername() + "\npassword: " + userDTO.getPassword());
     }
 
 
@@ -118,14 +118,14 @@ public class UserServiceImplTest {
     @Test(expected = BadDataException.class) // 6 тестов сервиса смены пароля
     public void changePassword_WhenUsernameIncorrect() {
         changePasswordDTO.setUsername("");
-        userServiceImpl.changePassword(changePasswordDTO);
+        userService.changePassword(changePasswordDTO);
     }
 
     @Test(expected = NotFoundException.class)
     public void changePassword_WhenUsernameNotFound() {
         changePasswordDTO.setUsername("Kira");
         when(userRepository.findByUsername(changePasswordDTO.getUsername())).thenReturn(null);
-        userServiceImpl.changePassword(changePasswordDTO);
+        userService.changePassword(changePasswordDTO);
     }
 
     @Test(expected = BadDataException.class)
@@ -136,7 +136,7 @@ public class UserServiceImplTest {
         userEntity.setUsername("Lil");
         userEntity.setPassword("555");
         when(userRepository.findByUsername(changePasswordDTO.getUsername())).thenReturn(userEntity);
-        userServiceImpl.changePassword(changePasswordDTO);
+        userService.changePassword(changePasswordDTO);
     }
 
     @Test(expected = BadDataException.class)
@@ -147,7 +147,7 @@ public class UserServiceImplTest {
         userEntity.setUsername("Lil");
         userEntity.setPassword("555");
         when(userRepository.findByUsername(changePasswordDTO.getUsername())).thenReturn(userEntity);
-        userServiceImpl.changePassword(changePasswordDTO);
+        userService.changePassword(changePasswordDTO);
     }
 
     @Test(expected = UnauthorizedException.class)
@@ -158,7 +158,7 @@ public class UserServiceImplTest {
         userEntity.setUsername("Lil");
         userEntity.setPassword("555");
         when(userRepository.findByUsername(changePasswordDTO.getUsername())).thenReturn(userEntity);
-        userServiceImpl.changePassword(changePasswordDTO);
+        userService.changePassword(changePasswordDTO);
     }
 
     @Test
@@ -169,7 +169,7 @@ public class UserServiceImplTest {
         userEntity.setUsername("Lil");
         userEntity.setPassword("999");
         when(userRepository.findByUsername(changePasswordDTO.getUsername())).thenReturn(userEntity);
-        assertEquals(userServiceImpl.changePassword(changePasswordDTO), "Password was changed successfully. Your new login details:\nusername: " +
+        assertEquals(userService.changePassword(changePasswordDTO), "Password was changed successfully. Your new login details:\nusername: " +
                 changePasswordDTO.getUsername() + "\npassword: " + changePasswordDTO.getNewPassword());
     }
 
@@ -180,12 +180,12 @@ public class UserServiceImplTest {
         userDTO.setPassword("999");
         userDTOList.add(userDTO);
         when(userRepository.getAllUsersFromBd()).thenReturn(userDTOList);
-        assertEquals(userServiceImpl.getAllUsers(),"List of user usernames and passwords:\n"+userDTOList.toString());
+        assertEquals(userService.getAllUsers(),"List of user usernames and passwords:\n"+userDTOList.toString());
     }
 
     @Test
     public void getAllUsers_WhenListUsersIsEmpty() {
         when(userRepository.getAllUsersFromBd()).thenThrow(new NotFoundException("No users in the repository"));
-        assertThrows(NotFoundException.class, () -> userServiceImpl.getAllUsers());
+        assertThrows(NotFoundException.class, () -> userService.getAllUsers());
     }
 }
