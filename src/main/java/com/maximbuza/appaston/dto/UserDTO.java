@@ -1,9 +1,8 @@
 package com.maximbuza.appaston.dto;
 
-public class User {
+public class UserDTO {
     private String username;
     private String password;
-    private String NewPassword;
 
     public String getUsername() {
         return username;
@@ -19,14 +18,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getNewPassword() {
-        return NewPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        NewPassword = newPassword;
     }
 
     @Override
