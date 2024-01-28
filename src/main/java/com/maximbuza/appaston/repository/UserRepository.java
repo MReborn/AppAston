@@ -1,10 +1,11 @@
 package com.maximbuza.appaston.repository;
 
 import com.maximbuza.appaston.configuration.SessionFactory;
-import com.maximbuza.appaston.dto.User;
+import com.maximbuza.appaston.dto.UserDTO;
 import com.maximbuza.appaston.entity.UserEntity;
 import com.maximbuza.appaston.exception.NotFoundException;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -14,19 +15,19 @@ import java.util.List;
 public class UserRepository {
     private final SessionFactory sessionFactory;
 
-    public UserRepository(SessionFactory sessionFactory) {
+    public UserRepository(@Autowired SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<User> getAllUsersFromBd() { // получает список всех работников в бд.
+    public List<UserDTO> getAllUsersFromBd() { // получает список всех работников в бд.
         try (Session session = sessionFactory.getSession()) {
             List<UserEntity> userEntities = session.createQuery("from UserEntity ORDER BY id ASC", UserEntity.class).getResultList();
             if (userEntities.isEmpty()) { // если список юзеров пуст бросает 404
                 throw new NotFoundException("No users in the repository");
             }
-            List<User> userDtoList = new ArrayList<>();
+            List<UserDTO> userDtoList = new ArrayList<>();
             for (UserEntity userEntity : userEntities) {
-                User user = new User();
+                UserDTO user = new UserDTO();
                 user.setUsername(userEntity.getUsername());
                 user.setPassword(userEntity.getPassword());
                 userDtoList.add(user);
@@ -35,37 +36,37 @@ public class UserRepository {
         }
     }
 
-    public boolean isUserExist(String username) { // проверяет существование пользователя в бд по юзернейму.
-        return findByUsername(username) != null;
+    public void saveOrUpdateUser(String username, String password) {
+        UserEntity userEntity = findByUsername(username);
+        if (userEntity == null) { // если не нашел - создаст юзера и даст username
+            userEntity = new UserEntity();
+            userEntity.setUsername(username);
+        }
+        userEntity.setPassword(password);
+
+        try (Session session = sessionFactory.getSession()) {
+            session.beginTransaction();
+            session.saveOrUpdate(userEntity); // либо добавит пользователя, либо обновит
+            session.flush();                  // синхронизация изменений с бд
+        }
     }
-    private UserEntity findByUsername(String username) {
-        try (Session session = sessionFactory.getSession()) {                  // с паролем в бд
+
+    public UserEntity findByUsername(String username) { // ищет  в бд юзера по username
+        try (Session session = sessionFactory.getSession()) {
             return session.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class)
                     .setParameter("username", username)
                     .uniqueResult();
         }
     }
 
-    public boolean isPasswordMatch(String username, String passwordPossible) { // проверка на совпадение указанного пароля в параметрах
+    public void deleteUser(String username) {
         UserEntity userEntity = findByUsername(username);
-        return userEntity.getPassword().equals(passwordPossible);
-    }
-
-    public void saveOrUpdateUser(User user) {
-        UserEntity userEntity = findByUsername(user.getUsername());
-        if (userEntity == null) { // если не нашел - создаст юзера
-            userEntity = new UserEntity();
-            userEntity.setUsername(user.getUsername());
-            userEntity.setPassword(user.getPassword());
-        } else { // если нашел - значит обновляем пароль
-            userEntity.setPassword(user.getNewPassword());
-        }
-        try (Session session = sessionFactory.getSession()) {               // если username уже такой есть, то обновит пароль
+        try (Session session = sessionFactory.getSession()) {
             session.beginTransaction();
-            session.saveOrUpdate(userEntity); // либо добавит пользователя, либо обновит
-            session.flush();
-            // синхронизация изменений с бд
+            session.delete(userEntity); // либо добавит пользователя, либо обновит
+            session.flush();                  // синхронизация изменений с бд
         }
+
     }
 
 
