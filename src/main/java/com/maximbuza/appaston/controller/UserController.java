@@ -3,7 +3,7 @@ package com.maximbuza.appaston.controller;
 
 import com.maximbuza.appaston.dto.ChangePasswordDTO;
 import com.maximbuza.appaston.dto.UserDTO;
-import com.maximbuza.appaston.service.UserServiceImpl;
+import com.maximbuza.appaston.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,30 +12,30 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api") // к этому контроллеру обращаться через /api
 public class UserController {
-    public UserController(@Autowired UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
+    public UserController(@Autowired UserService userService) {
+        this.userService = userService;
     } // прикрепили сервис к контроллеру
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
-    @GetMapping("/getAllUsersFromBD") // по этому адресу можно вызвать get запрос и получить список юзеров
+    @GetMapping("/getAllUsers") // по этому адресу можно вызвать get запрос и получить список юзеров
     public ResponseEntity<String> getAllUsersFromBd() {
-        return ResponseEntity.ok(userServiceImpl.getAllUsers());
+        return ResponseEntity.ok(userService.getAllUsers());
     } // делегирует запрос сервису
 
-    @PostMapping("/signUpUserForBD") //регистрация юзера
+    @PostMapping("/signUpUser") //регистрация юзера
     public ResponseEntity<String> signUpUserForBD(@RequestBody UserDTO user) { // образует контейнер данных пользователя и передает сервису
-        return ResponseEntity.status(201).body(userServiceImpl.signUpUser(user));
+        return ResponseEntity.status(201).body(userService.signUpUser(user));
     }
 
-    @PostMapping("/signInUserForBD") //вход юзера
+    @PostMapping("/signInUser") //вход юзера
     public ResponseEntity<String> signInUserForBD(@RequestBody UserDTO user) { // образует контейнер данных пользователя и передает сервису
-        return ResponseEntity.ok(userServiceImpl.signInUser(user));
+        return ResponseEntity.ok(userService.signInUser(user));
     }
 
-    @PostMapping("/changePasswordForBD") //смена пароля
+    @PostMapping("/changePassword") //смена пароля
     public ResponseEntity<String> changePasswordFromBD(@RequestBody ChangePasswordDTO changePasswordDTO) { // образует контейнер данных пользователя и передает сервису
-        return ResponseEntity.ok(userServiceImpl.changePassword(changePasswordDTO));
+        return ResponseEntity.ok(userService.changePassword(changePasswordDTO));
     }
 }
 
