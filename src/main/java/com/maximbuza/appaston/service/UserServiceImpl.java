@@ -1,6 +1,7 @@
 package com.maximbuza.appaston.service;
 
-import com.maximbuza.appaston.dto.User;
+import com.maximbuza.appaston.dto.ChangePasswordDTO;
+import com.maximbuza.appaston.dto.UserDTO;
 import com.maximbuza.appaston.exception.BadDataException;
 import com.maximbuza.appaston.exception.ConflictException;
 import com.maximbuza.appaston.exception.NotFoundException;
@@ -18,7 +19,7 @@ public class UserServiceImpl implements UserService {
     } // просит вернуть всех юзеров класс, работающий с хранилищем
 
     @Override
-    public String signUpUser(User user) { //регистрация нового пользователя
+    public String signUpUser(UserDTO user) { //регистрация нового пользователя
         String usernamePossible = user.getUsername(); //получает из контейнера данные
         String passwordPossible = user.getPassword();
         if (isUserIncorrect(usernamePossible)) { // проверка на корректность username, если не прошел проверку то соответственный мессаж
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
     } // проверяет пустой ли пароль и возвращает правду если пустой
 
     @Override
-    public String signInUser(User user) { //вход юзера
+    public String signInUser(UserDTO user) { //вход юзера
         String username = user.getUsername();
         String password = user.getPassword();
         if (isUserIncorrect(username)) {
@@ -62,10 +63,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public String changePassword(User user) { //смена пароля
-        String username = user.getUsername();
-        String oldPassword = user.getPassword();
-        String newPassword = user.getNewPassword();
+    public String changePassword(ChangePasswordDTO changePasswordDTO) { //смена пароля
+        String username = changePasswordDTO.getUsername();
+        String oldPassword = changePasswordDTO.getOldPassword();
+        String newPassword = changePasswordDTO.getNewPassword();
 
         if (isUserIncorrect(username)) {
             throw new BadDataException("Username is incorrect");
