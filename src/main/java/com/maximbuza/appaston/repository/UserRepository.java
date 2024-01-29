@@ -3,7 +3,9 @@ package com.maximbuza.appaston.repository;
 import com.maximbuza.appaston.configuration.SessionFactory;
 import com.maximbuza.appaston.dto.UserDTO;
 import com.maximbuza.appaston.entity.UserEntity;
+import com.maximbuza.appaston.exception.DatabaseException;
 import com.maximbuza.appaston.exception.NotFoundException;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,21 +22,26 @@ public class UserRepository {
     }
 
     public List<UserDTO> getAllUsersFromBd() { // получает список всех работников в бд.
+        List<UserEntity> userEntities;
         try (Session session = sessionFactory.getSession()) {
-            List<UserEntity> userEntities = session.createQuery("from UserEntity ORDER BY id ASC", UserEntity.class).getResultList();
+            userEntities = session.createQuery("FROM UserEntity ORDER BY id ASC", UserEntity.class).getResultList();
             if (userEntities.isEmpty()) { // если список юзеров пуст бросает 404
                 throw new NotFoundException("No users in the repository");
             }
-            List<UserDTO> userDtoList = new ArrayList<>(); // создаю лист DTO юзера для корректного отображения
-            for (UserEntity userEntity : userEntities) {   // и для того, чтобы оставить только нужные поля
-                UserDTO user = new UserDTO();
-                user.setUsername(userEntity.getUsername());
-                user.setPassword(userEntity.getPassword());
-                userDtoList.add(user);
-            }
-            return userDtoList;
+        } catch (HibernateException e) {
+            throw new DatabaseException("Error retrieving users from the database");
         }
+
+        List<UserDTO> userDtoList = new ArrayList<>(); // создаю лист DTO юзера для корректного отображения
+        for (UserEntity userEntity : userEntities) {   // и для того, чтобы оставить только нужные поля
+            UserDTO user = new UserDTO();
+            user.setUsername(userEntity.getUsername());
+            user.setPassword(userEntity.getPassword());
+            userDtoList.add(user);
+        }
+        return userDtoList;
     }
+
 
     public void saveOrUpdateUser(String username, String password) {
         UserEntity userEntity = findByUsername(username);
@@ -48,6 +55,8 @@ public class UserRepository {
             session.beginTransaction();
             session.saveOrUpdate(userEntity); // либо добавит пользователя, либо обновит
             session.flush();                  // синхронизация изменений с бд
+        } catch (HibernateException e) {
+            throw new DatabaseException("Error saving/updating the user to the database");
         }
     }
 
@@ -56,7 +65,8 @@ public class UserRepository {
             return session.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class)
                     .setParameter("username", username)
                     .uniqueResult();
+        } catch (HibernateException e) {
+            throw new DatabaseException("User search error in the database");
         }
     }
-
 }
