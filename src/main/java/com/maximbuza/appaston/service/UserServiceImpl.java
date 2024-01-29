@@ -8,6 +8,9 @@ import com.maximbuza.appaston.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService{
     public UserServiceImpl(@Autowired UserRepository userRepository) {
@@ -17,7 +20,15 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
 
     public String getAllUsers() {
-        return "List of user usernames and passwords:\n" + userRepository.getAllUsersFromBd();
+        List<UserEntity> userEntityList = userRepository.getAllUsersFromBd();
+        List<UserDTO> userDTOList = new ArrayList<>();
+        for(UserEntity userEntity: userEntityList){
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUsername(userEntity.getUsername());
+            userDTO.setPassword(userEntity.getPassword());
+            userDTOList.add(userDTO);
+        }
+        return "List of user usernames and passwords:\n" + userDTOList;
     } // просит вернуть всех юзеров класс, работающий с хранилищем
 
     public String signUpUser(UserDTO user) { //регистрация нового пользователя

@@ -28,6 +28,7 @@ public class UserServiceImplTest {
     UserEntity userEntity;
     ChangePasswordDTO changePasswordDTO;
     List<UserDTO> userDTOList;
+    List<UserEntity> userEntityList;
     @Before
     public void setUp() {
          userDTO = new UserDTO();
@@ -179,7 +180,13 @@ public class UserServiceImplTest {
         userDTO.setUsername("Lil");
         userDTO.setPassword("999");
         userDTOList.add(userDTO);
-        when(userRepository.getAllUsersFromBd()).thenReturn(userDTOList);
+
+        userEntityList = new ArrayList<>();
+        userEntity.setUsername("Lil");
+        userEntity.setPassword("999");
+        userEntityList.add(userEntity);
+
+        when(userRepository.getAllUsersFromBd()).thenReturn(userEntityList);
         assertEquals(userService.getAllUsers(),"List of user usernames and passwords:\n"+userDTOList.toString());
     }
 
