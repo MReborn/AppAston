@@ -1,9 +1,6 @@
 package com.maximbuza.appaston.aop;
 
-import com.maximbuza.appaston.exception.BadDataException;
-import com.maximbuza.appaston.exception.ConflictException;
-import com.maximbuza.appaston.exception.NotFoundException;
-import com.maximbuza.appaston.exception.UnauthorizedException;
+import com.maximbuza.appaston.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,4 +28,8 @@ public class ExceptionHandlerClass {
         return ResponseEntity.status(401).body(unauthorizedException.getMessage());
     }
 
+    @ExceptionHandler
+    public ResponseEntity<String> databaseHandler(DatabaseException databaseException) {
+        return ResponseEntity.status(500).body(databaseException.getMessage());
+    }
 }
