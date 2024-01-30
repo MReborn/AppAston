@@ -1,16 +1,14 @@
 package com.maximbuza.appaston.repository;
 
 import com.maximbuza.appaston.configuration.SessionFactory;
-import com.maximbuza.appaston.dto.UserDTO;
 import com.maximbuza.appaston.entity.UserEntity;
 import com.maximbuza.appaston.exception.DatabaseException;
 import com.maximbuza.appaston.exception.NotFoundException;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 @Repository
@@ -28,7 +26,7 @@ public class UserRepository {
             if (userEntities.isEmpty()) { // если список юзеров пуст бросает 404
                 throw new NotFoundException("No users in the repository");
             }
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             throw new DatabaseException("Error retrieving users from the database");
         }
 
@@ -48,7 +46,7 @@ public class UserRepository {
             session.beginTransaction();
             session.saveOrUpdate(userEntity); // либо добавит пользователя, либо обновит
             session.flush();                  // синхронизация изменений с бд
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             throw new DatabaseException("Error saving/updating the user to the database");
         }
     }
@@ -58,7 +56,7 @@ public class UserRepository {
             return session.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class)
                     .setParameter("username", username)
                     .uniqueResult();
-        } catch (HibernateException e) {
+        } catch (PersistenceException e) {
             throw new DatabaseException("User search error in the database");
         }
     }
