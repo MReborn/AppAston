@@ -1,12 +1,12 @@
 Посмотреть всех пользователей:
 
-http://localhost:8080/AppAston_war_exploded/api/getAllUsers
+http://localhost:8080/api/getAllUsers
 
 GET запрос дает список пользователей.
 
 Регистрация нового пользователя:
 
-http://localhost:8080/AppAston_war_exploded/api/signUpUser
+http://localhost:8080/api/signUpUser
 
 POST с запрос с телом JSON
 
@@ -20,7 +20,7 @@ Ex:
 
 Вход пользователя:
 
-http://localhost:8080/AppAston_war_exploded/api/signInUser
+http://localhost:8080/api/signInUser
 
 POST запрос с телом JSON
 
@@ -34,12 +34,11 @@ Ex:
 
 Смена пароля:
 
-http://localhost:8080/AppAston_war_exploded/api/changePassword
+http://localhost:8080/api/changePassword
 
 POST запрос с телом JSON
 
 Ex:
-
 {
     "username": "Mks",
     "oldPassword": "1",
