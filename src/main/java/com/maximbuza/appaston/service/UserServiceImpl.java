@@ -5,24 +5,28 @@ import com.maximbuza.appaston.dto.UserDTO;
 import com.maximbuza.appaston.entity.UserEntity;
 import com.maximbuza.appaston.exception.*;
 import com.maximbuza.appaston.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
-    public UserServiceImpl(@Autowired UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+public class UserServiceImpl implements UserService {
+
 
     private final UserRepository userRepository;
 
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public String getAllUsers() {
-        List<UserEntity> userEntityList = userRepository.getAllUsersFromBd();
+        List<UserEntity> userEntityList = userRepository.findAll();
+        if (userEntityList.isEmpty()) {
+            throw new NotFoundException("No users in the repository");
+        }
         List<UserDTO> userDTOList = new ArrayList<>();
-        for(UserEntity userEntity: userEntityList){
+        for (UserEntity userEntity : userEntityList) {
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(userEntity.getUsername());
             userDTO.setPassword(userEntity.getPassword());
@@ -43,7 +47,10 @@ public class UserServiceImpl implements UserService{
         if (isPasswordIncorrectFormat(passwordPossible)) { // проверка на некорректный пароль
             throw new BadDataException("Password is incorrect format:(");
         }
-        userRepository.saveOrUpdateUser(usernamePossible, passwordPossible); // если все проверки пройдены то помещает данные в хранилище через спецкласс
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(usernamePossible);
+        userEntity.setPassword(passwordPossible);
+        userRepository.save(userEntity);// если все проверки пройдены то помещает данные в хранилище через спецкласс
         return "User has been added:\nlogin: " + usernamePossible + "\npassword: " + passwordPossible;
     }
 
@@ -96,7 +103,9 @@ public class UserServiceImpl implements UserService{
             throw new BadDataException("Some of the Passwords in the wrong format :(");
         }
         if (isPasswordMatch(username, oldPassword)) { // если все условия выполнены то пароль сменится
-            userRepository.saveOrUpdateUser(username, newPassword);
+            UserEntity userEntity = userRepository.findByUsername(username);
+            userEntity.setPassword(newPassword);
+            userRepository.save(userEntity);
             return "Password was changed successfully. Your new login details:\nusername: " + username + "\npassword: " + newPassword;
         } else {
             throw new UnauthorizedException("Wrong old password");

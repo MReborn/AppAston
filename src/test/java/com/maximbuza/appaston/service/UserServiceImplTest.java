@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -186,13 +186,13 @@ public class UserServiceImplTest {
         userEntity.setPassword("999");
         userEntityList.add(userEntity);
 
-        when(userRepository.getAllUsersFromBd()).thenReturn(userEntityList);
+        when(userRepository.findAll()).thenReturn(userEntityList);
         assertEquals(userService.getAllUsers(),"List of user usernames and passwords:\n"+userDTOList.toString());
     }
 
     @Test
     public void getAllUsers_WhenListUsersIsEmpty() {
-        when(userRepository.getAllUsersFromBd()).thenThrow(new NotFoundException("No users in the repository"));
+        when(userRepository.findAll()).thenThrow(new NotFoundException("No users in the repository"));
         assertThrows(NotFoundException.class, () -> userService.getAllUsers());
     }
 }
