@@ -1,3 +1,4 @@
+Hibernate
 Посмотреть всех пользователей:
 
 http://localhost:8080/AppAston_war_exploded/api/getAllUsers
