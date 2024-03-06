@@ -19,6 +19,10 @@ public class UserRepository {
         this.sessionFactory = sessionFactory;
     }
 
+    private static final String NOT_FOUND_EX_MESSAGE = "No users in the repository";
+    private static final String DATABASE_GET_EX_MESSAGE = "Error retrieving users from the database";
+    private static final String DATABASE_SAVE_EX_MESSAGE = "Error saving/updating the user to the database";
+
     /**
      * Метод для получения списка всех пользователей.
      * @return {@link List}<{@link UserEntity}>
@@ -28,10 +32,10 @@ public class UserRepository {
         try (Session session = sessionFactory.getSession()) {
             userEntities = session.createQuery("FROM UserEntity ORDER BY id ASC", UserEntity.class).getResultList();
             if (userEntities.isEmpty()) { // если список юзеров пуст бросает 404
-                throw new NotFoundException("No users in the repository");
+                throw new NotFoundException(NOT_FOUND_EX_MESSAGE);
             }
         } catch (PersistenceException e) {
-            throw new DatabaseException("Error retrieving users from the database");
+            throw new DatabaseException(DATABASE_GET_EX_MESSAGE);
         }
 
         return userEntities;
@@ -53,7 +57,7 @@ public class UserRepository {
             session.saveOrUpdate(userEntity); // либо добавит пользователя, либо обновит
             session.flush();                  // синхронизация изменений с бд
         } catch (PersistenceException e) {
-            throw new DatabaseException("Error saving/updating the user to the database");
+            throw new DatabaseException(DATABASE_SAVE_EX_MESSAGE);
         }
     }
 
@@ -67,7 +71,7 @@ public class UserRepository {
                     .setParameter("username", username)
                     .uniqueResult();
         } catch (PersistenceException e) {
-            throw new DatabaseException("User search error in the database");
+            throw new DatabaseException(DATABASE_GET_EX_MESSAGE);
         }
     }
 }

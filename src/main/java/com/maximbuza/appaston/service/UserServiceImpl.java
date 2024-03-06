@@ -22,6 +22,12 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 
+    private static final String INVALID_USERNAME_MESSAGE = "Username is incorrect";
+    private static final String INVALID_PASSWORD_MESSAGE = "Password is incorrect format";
+    private static final String NOT_FOUND_EX_MESSAGE = "The user was not found";
+    private static final String CONFLICT_EX_MESSAGE = "Oh no! The user has already been added once";
+    private static final String UNAUTHORIZED_EX_MESSAGE = "Wrong password";
+
     /**
      * Метод для получения всех пользователей.
      * @return {@link String}
@@ -46,13 +52,13 @@ public class UserServiceImpl implements UserService{
         String usernamePossible = user.getUsername(); //получает из контейнера данные
         String passwordPossible = user.getPassword();
         if (isUserIncorrect(usernamePossible)) { // проверка на корректность username, если не прошел проверку то соответственный мессаж
-            throw new BadDataException("Username is incorrect");
+            throw new BadDataException(INVALID_USERNAME_MESSAGE);
         }
         if (isUserExist(usernamePossible)) { // существует ли уже пользователь в контейнере?
-            throw new ConflictException("Oh no! The user has already been added once");
+            throw new ConflictException(CONFLICT_EX_MESSAGE);
         }
         if (isPasswordIncorrectFormat(passwordPossible)) { // проверка на некорректный пароль
-            throw new BadDataException("Password is incorrect format:(");
+            throw new BadDataException(INVALID_PASSWORD_MESSAGE);
         }
         userRepository.saveOrUpdateUser(usernamePossible, passwordPossible); // если все проверки пройдены то помещает данные в хранилище через спецкласс
         return "User has been added:\nlogin: " + usernamePossible + "\npassword: " + passwordPossible;
@@ -78,17 +84,17 @@ public class UserServiceImpl implements UserService{
         String username = user.getUsername();
         String password = user.getPassword();
         if (isUserIncorrect(username)) {
-            throw new BadDataException("Username is incorrect");
+            throw new BadDataException(INVALID_USERNAME_MESSAGE);
         }
         if (!isUserExist(username)) {
-            throw new NotFoundException("The user was not found");
+            throw new NotFoundException(NOT_FOUND_EX_MESSAGE);
         }
         if (isPasswordIncorrectFormat(password)) {
-            throw new BadDataException("Password is incorrect format:(");
+            throw new BadDataException(INVALID_PASSWORD_MESSAGE);
         }
         if (isPasswordMatch(username, password)) { // проверяет на совпадение пароля с хранилищем если всё ок то говорит что успешный вход
             return "Successful login. Congratulations";
-        } else throw new UnauthorizedException("Wrong password");
+        } else throw new UnauthorizedException(UNAUTHORIZED_EX_MESSAGE);
     }
 
     public boolean isPasswordMatch(String username, String passwordPossible) { // проверка на совпадение указанного пароля в параметрах
@@ -106,19 +112,19 @@ public class UserServiceImpl implements UserService{
         String newPassword = changePasswordDTO.getNewPassword();
 
         if (isUserIncorrect(username)) {
-            throw new BadDataException("Username is incorrect");
+            throw new BadDataException(INVALID_USERNAME_MESSAGE);
         }
         if (!isUserExist(username)) {
-            throw new NotFoundException("The user was not found");
+            throw new NotFoundException(NOT_FOUND_EX_MESSAGE);
         }
         if (isPasswordIncorrectFormat(oldPassword) || isPasswordIncorrectFormat(newPassword)) {
-            throw new BadDataException("Some of the Passwords in the wrong format :(");
+            throw new BadDataException(INVALID_PASSWORD_MESSAGE);
         }
         if (isPasswordMatch(username, oldPassword)) { // если все условия выполнены то пароль сменится
             userRepository.saveOrUpdateUser(username, newPassword);
             return "Password was changed successfully. Your new login details:\nusername: " + username + "\npassword: " + newPassword;
         } else {
-            throw new UnauthorizedException("Wrong old password");
+            throw new UnauthorizedException(UNAUTHORIZED_EX_MESSAGE);
         }
     }
 }
