@@ -52,20 +52,20 @@ public class UserServiceImpl implements UserService{
         String usernamePossible = user.getUsername(); //получает из контейнера данные
         String passwordPossible = user.getPassword();
         if (isUserIncorrect(usernamePossible)) { // проверка на корректность username, если не прошел проверку то соответственный мессаж
-            throw new BadDataException(INVALID_USERNAME_MESSAGE);
+            throw new CustomException(CustomExceptionType.BAD_DATA, INVALID_USERNAME_MESSAGE);
         }
         if (isUserExist(usernamePossible)) { // существует ли уже пользователь в контейнере?
-            throw new ConflictException(CONFLICT_EX_MESSAGE);
+            throw new CustomException(CustomExceptionType.CONFLICT, CONFLICT_EX_MESSAGE);
         }
         if (isPasswordIncorrectFormat(passwordPossible)) { // проверка на некорректный пароль
-            throw new BadDataException(INVALID_PASSWORD_MESSAGE);
+            throw new CustomException(CustomExceptionType.BAD_DATA, INVALID_PASSWORD_MESSAGE);
         }
         userRepository.saveOrUpdateUser(usernamePossible, passwordPossible); // если все проверки пройдены то помещает данные в хранилище через спецкласс
         return "User has been added:\nlogin: " + usernamePossible + "\npassword: " + passwordPossible;
     }
 
     public static boolean isUserIncorrect(String username) {
-        return username.equals("");
+        return username.isEmpty();
     } // проверка пустая ли строка
 
     public boolean isUserExist(String username) { // проверяет существование пользователя в бд по юзернейму.
@@ -84,17 +84,17 @@ public class UserServiceImpl implements UserService{
         String username = user.getUsername();
         String password = user.getPassword();
         if (isUserIncorrect(username)) {
-            throw new BadDataException(INVALID_USERNAME_MESSAGE);
+            throw new CustomException(CustomExceptionType.BAD_DATA, INVALID_USERNAME_MESSAGE);
         }
         if (!isUserExist(username)) {
-            throw new NotFoundException(NOT_FOUND_EX_MESSAGE);
+            throw new CustomException(CustomExceptionType.NOT_FOUND, NOT_FOUND_EX_MESSAGE);
         }
         if (isPasswordIncorrectFormat(password)) {
-            throw new BadDataException(INVALID_PASSWORD_MESSAGE);
+            throw new CustomException(CustomExceptionType.BAD_DATA, INVALID_PASSWORD_MESSAGE);
         }
         if (isPasswordMatch(username, password)) { // проверяет на совпадение пароля с хранилищем если всё ок то говорит что успешный вход
             return "Successful login. Congratulations";
-        } else throw new UnauthorizedException(UNAUTHORIZED_EX_MESSAGE);
+        } else throw new CustomException(CustomExceptionType.UNAUTHORIZED, UNAUTHORIZED_EX_MESSAGE);
     }
 
     public boolean isPasswordMatch(String username, String passwordPossible) { // проверка на совпадение указанного пароля в параметрах
@@ -112,19 +112,19 @@ public class UserServiceImpl implements UserService{
         String newPassword = changePasswordDTO.getNewPassword();
 
         if (isUserIncorrect(username)) {
-            throw new BadDataException(INVALID_USERNAME_MESSAGE);
+            throw new CustomException(CustomExceptionType.BAD_DATA, INVALID_USERNAME_MESSAGE);
         }
         if (!isUserExist(username)) {
-            throw new NotFoundException(NOT_FOUND_EX_MESSAGE);
+            throw new CustomException(CustomExceptionType.NOT_FOUND, NOT_FOUND_EX_MESSAGE);
         }
         if (isPasswordIncorrectFormat(oldPassword) || isPasswordIncorrectFormat(newPassword)) {
-            throw new BadDataException(INVALID_PASSWORD_MESSAGE);
+            throw new CustomException(CustomExceptionType.BAD_DATA, INVALID_PASSWORD_MESSAGE);
         }
         if (isPasswordMatch(username, oldPassword)) { // если все условия выполнены то пароль сменится
             userRepository.saveOrUpdateUser(username, newPassword);
             return "Password was changed successfully. Your new login details:\nusername: " + username + "\npassword: " + newPassword;
         } else {
-            throw new UnauthorizedException(UNAUTHORIZED_EX_MESSAGE);
+            throw new CustomException(CustomExceptionType.UNAUTHORIZED, UNAUTHORIZED_EX_MESSAGE);
         }
     }
 }

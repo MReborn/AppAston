@@ -2,8 +2,8 @@ package com.maximbuza.appaston.repository;
 
 import com.maximbuza.appaston.configuration.SessionFactory;
 import com.maximbuza.appaston.entity.UserEntity;
-import com.maximbuza.appaston.exception.DatabaseException;
-import com.maximbuza.appaston.exception.NotFoundException;
+import com.maximbuza.appaston.exception.CustomException;
+import com.maximbuza.appaston.exception.CustomExceptionType;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,10 +32,10 @@ public class UserRepository {
         try (Session session = sessionFactory.getSession()) {
             userEntities = session.createQuery("FROM UserEntity ORDER BY id ASC", UserEntity.class).getResultList();
             if (userEntities.isEmpty()) { // если список юзеров пуст бросает 404
-                throw new NotFoundException(NOT_FOUND_EX_MESSAGE);
+                throw new CustomException(CustomExceptionType.NOT_FOUND, NOT_FOUND_EX_MESSAGE);
             }
         } catch (PersistenceException e) {
-            throw new DatabaseException(DATABASE_GET_EX_MESSAGE);
+            throw new CustomException(CustomExceptionType.DATABASE_ERROR, DATABASE_GET_EX_MESSAGE);
         }
 
         return userEntities;
@@ -57,7 +57,7 @@ public class UserRepository {
             session.saveOrUpdate(userEntity); // либо добавит пользователя, либо обновит
             session.flush();                  // синхронизация изменений с бд
         } catch (PersistenceException e) {
-            throw new DatabaseException(DATABASE_SAVE_EX_MESSAGE);
+            throw new CustomException(CustomExceptionType.DATABASE_ERROR, DATABASE_SAVE_EX_MESSAGE);
         }
     }
 
@@ -71,7 +71,7 @@ public class UserRepository {
                     .setParameter("username", username)
                     .uniqueResult();
         } catch (PersistenceException e) {
-            throw new DatabaseException(DATABASE_GET_EX_MESSAGE);
+            throw new CustomException(CustomExceptionType.DATABASE_ERROR, DATABASE_GET_EX_MESSAGE);
         }
     }
 }
