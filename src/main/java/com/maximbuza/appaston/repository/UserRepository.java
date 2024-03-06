@@ -19,7 +19,11 @@ public class UserRepository {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<UserEntity> getAllUsersFromBd() { // получает список всех работников в бд.
+    /**
+     * Метод для получения списка всех пользователей.
+     * @return {@link List}<{@link UserEntity}>
+     */
+    public List<UserEntity> getAllUsersFromBd() {
         List<UserEntity> userEntities;
         try (Session session = sessionFactory.getSession()) {
             userEntities = session.createQuery("FROM UserEntity ORDER BY id ASC", UserEntity.class).getResultList();
@@ -33,7 +37,9 @@ public class UserRepository {
         return userEntities;
     }
 
-
+    /**
+     * Метод для сохранения или обновления данных пользователя.
+     */
     public void saveOrUpdateUser(String username, String password) {
         UserEntity userEntity = findByUsername(username);
         if (userEntity == null) { // если не нашел - создаст юзера и даст username
@@ -51,7 +57,11 @@ public class UserRepository {
         }
     }
 
-    public UserEntity findByUsername(String username) { // ищет  в бд юзера по username
+    /**
+     * Метод для поиска пользователя по username.
+     * @return {@link UserEntity}
+     */
+    public UserEntity findByUsername(String username) {
         try (Session session = sessionFactory.getSession()) {
             return session.createQuery("FROM UserEntity WHERE username = :username", UserEntity.class)
                     .setParameter("username", username)

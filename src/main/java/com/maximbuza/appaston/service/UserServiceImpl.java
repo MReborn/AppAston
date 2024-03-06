@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Реализация интерфейса {@link UserService}
+ */
 @Service
 public class UserServiceImpl implements UserService{
     public UserServiceImpl(@Autowired UserRepository userRepository) {
@@ -19,6 +22,10 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 
+    /**
+     * Метод для получения всех пользователей.
+     * @return {@link String}
+     */
     public String getAllUsers() {
         List<UserEntity> userEntityList = userRepository.getAllUsersFromBd();
         List<UserDTO> userDTOList = new ArrayList<>();
@@ -31,7 +38,11 @@ public class UserServiceImpl implements UserService{
         return "List of user usernames and passwords:\n" + userDTOList;
     } // просит вернуть всех юзеров класс, работающий с хранилищем
 
-    public String signUpUser(UserDTO user) { //регистрация нового пользователя
+    /**
+     * Метод для регистрации нового пользователя.
+     * @return {@link String}
+     */
+    public String signUpUser(UserDTO user) {
         String usernamePossible = user.getUsername(); //получает из контейнера данные
         String passwordPossible = user.getPassword();
         if (isUserIncorrect(usernamePossible)) { // проверка на корректность username, если не прошел проверку то соответственный мессаж
@@ -56,10 +67,14 @@ public class UserServiceImpl implements UserService{
     } // ищет пользователя по username. возвращает true если находит
 
     public static boolean isPasswordIncorrectFormat(String password) {
-        return password.equals("");
+        return password.isEmpty();
     } // проверяет пустой ли пароль и возвращает правду если пустой
 
-    public String signInUser(UserDTO user) { //вход юзера
+    /**
+     * Метод для авторизации пользователя.
+     * @return {@link String}
+     */
+    public String signInUser(UserDTO user) {
         String username = user.getUsername();
         String password = user.getPassword();
         if (isUserIncorrect(username)) {
@@ -81,7 +96,11 @@ public class UserServiceImpl implements UserService{
         return userEntity.getPassword().equals(passwordPossible);
     }
 
-    public String changePassword(ChangePasswordDTO changePasswordDTO) { //смена пароля
+    /**
+     * Метод для смены пароля пользователя.
+     * @return {@link String}
+     */
+    public String changePassword(ChangePasswordDTO changePasswordDTO) {
         String username = changePasswordDTO.getUsername();
         String oldPassword = changePasswordDTO.getOldPassword();
         String newPassword = changePasswordDTO.getNewPassword();

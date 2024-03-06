@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Сущность пользователя.
+ */
 @Entity
 @Table(name = "user_inform")
 @Getter

@@ -3,6 +3,9 @@ package com.maximbuza.appaston.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO пользователя.
+ */
 @Setter
 @Getter
 public class UserDTO {
